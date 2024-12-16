@@ -15,7 +15,7 @@ export const Header = () => (
     <p className="leading-7 [&:not(:first-child)]:mt-6">Revolutionize Grading with PeerGrader: A Modern Platform for Streamlined Feedback</p>
     <div className="flex items-center justify-center py-10">
     <Button className="bg-secondary text-secondary-foreground mx-2 hover:text-primary-foreground"><Link to="/signup">Sign Up</Link></Button>
-    <Button className="bg-secondary text-secondary-foreground mx-2 hover:text-primary-foreground"><Link to="/login">Login</Link></Button>
+    <Button className="bg-secondary text-secondary-foreground mx-2 hover:text-primary-foreground"><Link to={"/login"}>Log In</Link></Button>
     </div>
   </header>
 );
