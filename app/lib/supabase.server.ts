@@ -7,8 +7,8 @@ export function createSupabaseServerClient(request: Request) {
     headers: new Headers(),
 
     client: createServerClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!,
+      process.env.VITE_SUPABASE_URL!,
+      process.env.VITE_SUPABASE_KEY!,
       {
         cookies: {
           get(key) {
