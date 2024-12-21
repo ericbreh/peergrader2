@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import "./tailwind.css";
 
 import clsx from "clsx"
@@ -45,6 +45,13 @@ export const links: LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "PeerGrader" },
+    { name: "description", content: "Welcome to PeerGrader!" },
+  ];
+};
 
 export function App() {
   const data = useLoaderData<typeof loader>()
