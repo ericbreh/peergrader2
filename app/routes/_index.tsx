@@ -67,7 +67,7 @@ export const Footer = () => (
 
 export default function Index() {
   return (
-    <><Navigation /><div className="flex flex-col min-h-screen w-full bg-white">
+    <><div className="flex flex-col min-h-screen w-full bg-white">
       <Header />
       <main className="flex-grow w-full bg-white">
         <HowItWorks />

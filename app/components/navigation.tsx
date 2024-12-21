@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useMatches } from "@remix-run/react";
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -8,6 +8,12 @@ import {
 import { ModeToggle } from "./mode-toggle";
 
 export function Navigation() {
+    const matches = useMatches();
+    const currentPath = matches[matches.length - 1].pathname;
+    const hideNavRoutes = ["/login", "/signup"];
+
+    if (hideNavRoutes.includes(currentPath)) return null;
+
     return (
         <nav className="border-b bg-background">
             <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
