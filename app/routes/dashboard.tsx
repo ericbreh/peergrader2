@@ -13,7 +13,7 @@ export default function Dashboard() {
                             <p className="text-xl text-left text-white font-semibold">To-Do Assignments</p>
                         </div>
                         <div className="light-white flex-grow p-6">
-                            {/* <StudentListAllAsgn setCourseAssignmentsCount={setCourseAssignmentsCount} /> */}
+                            <StudentListAllAsgn setCourseAssignmentsCount={setCourseAssignmentsCount} />
                         </div>
                     </div>
 
