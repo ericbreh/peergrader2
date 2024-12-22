@@ -51,7 +51,6 @@ export const meta: MetaFunction = () => {
     { title: "PeerGrader" },
     { name: "description", content: "Welcome to PeerGrader!" },
   ];
-  
 };
 
 export function App() {

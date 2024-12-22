@@ -8,6 +8,7 @@ import {
 import { ModeToggle } from "./mode-toggle";
 
 export function Navigation() {
+    // TODO: I'm not sure if this is the most optimal, look into different options. Parent layout?
     const matches = useMatches();
     const currentPath = matches[matches.length - 1].pathname;
     const hideNavRoutes = ["/login", "/signup"];
