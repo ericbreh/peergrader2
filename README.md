@@ -19,12 +19,10 @@ VITE_SUPABASE_KEY="key"
 ## UI elements
 
 * [shadcn ui docs](https://ui.shadcn.com/docs/installation/remix)
-
 * [Theme](https://ui.shadcn.com/docs/theming)
-
 * [Text](https://ui.shadcn.com/docs/components/typography)
 
-## Navigation/routing
+## Route map rough idea
 
 * <https://remix.run/docs/en/main/discussion/routes>
 

@@ -65,9 +65,13 @@ export function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body>
-        <Navigation />
-        <Outlet />
+      <body className="h-screen overflow-hidden">
+        <div className="flex h-full flex-col">
+          <Navigation />
+          <main className="flex-1 overflow-auto">
+            <Outlet />
+          </main>
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

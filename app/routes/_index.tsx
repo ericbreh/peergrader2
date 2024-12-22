@@ -55,9 +55,6 @@ export default function Index() {
           </div>
         </section>
       </main>
-      <footer className="w-full font-bold p-6 text-center bg-muted text-muted-foreground">
-        <p>&copy;2024 PeerGrader</p>
-      </footer>
     </div></>
   );
 }
