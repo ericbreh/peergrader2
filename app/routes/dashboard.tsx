@@ -2,15 +2,10 @@ import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase.server";
 import { useLoaderData } from "@remix-run/react";
+import type { Course } from "~/types";
 
 
-type Course = {
-    course_id: string;
-    name: string;
-    number: string;
-}
-
-
+// Loader function to fetch user courses
 export async function loader({ request }: LoaderFunctionArgs) {
     const supabase = createSupabaseServerClient(request);
     const { data: { user } } = await supabase.client.auth.getUser();

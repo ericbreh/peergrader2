@@ -1,6 +1,7 @@
 # Welcome to Peergrader
 
 * [Remix docs](https://remix.run/docs)
+* [shadcn ui docs](https://ui.shadcn.com/docs/installation/remix)
 
 ## To run development server
 
@@ -15,12 +16,6 @@ create a `.env` file in the `peergrader2` folder
 VITE_SUPABASE_URL="url"
 VITE_SUPABASE_KEY="key"
 ```
-
-## UI elements
-
-* [shadcn ui docs](https://ui.shadcn.com/docs/installation/remix)
-* [Theme](https://ui.shadcn.com/docs/theming)
-* [Text](https://ui.shadcn.com/docs/components/typography)
 
 ## Route map rough idea
 

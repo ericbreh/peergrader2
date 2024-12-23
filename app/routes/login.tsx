@@ -7,6 +7,7 @@ import {
     AlertTitle,
 } from "~/components/ui/alert"
 
+// Loader function to check if the user is already logged in
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     if (await isUserLoggedIn(request)) {
         throw redirect("/dashboard");
@@ -15,6 +16,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return null;
 };
 
+// Action function to handle user login
 export const action = async ({ request }: ActionFunctionArgs) => {
     const error = await signInWithPassword(request, "/dashboard");
 

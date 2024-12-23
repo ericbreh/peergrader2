@@ -16,14 +16,15 @@ import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "./sessions.server"
 import { Navigation } from "./components/navigation";
 
-// Return the theme from the session storage using the loader
+// Loader function to return the theme from the session storage
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request)
   return {
     theme: getTheme(),
   }
 }
-// ThemeProvider.
+
+// ThemeProvider component to wrap the app with theme context
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
   return (
@@ -33,6 +34,7 @@ export default function AppWithProviders() {
   )
 }
 
+// Links function to include external stylesheets
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -46,6 +48,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
+// Meta function to include meta tags
 export const meta: MetaFunction = () => {
   return [
     { title: "PeerGrader" },
@@ -53,6 +56,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+// Main App component
 export function App() {
   const data = useLoaderData<typeof loader>()
   const [theme] = useTheme()
