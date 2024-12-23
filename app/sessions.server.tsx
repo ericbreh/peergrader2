@@ -6,11 +6,11 @@ const isProduction = process.env.NODE_ENV === "production"
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {
-    name: "theme",
+    name: "app_session",
     path: "/",
     httpOnly: true,
     sameSite: "lax",
-    secrets: ["s3cr3t"],
+    secrets: [process.env.SESSION_SECRET || "development_secret"],
     // Set domain and secure only if in production
     ...(isProduction
       ? { domain: "your-production-domain.com", secure: true }
@@ -18,4 +18,6 @@ const sessionStorage = createCookieSessionStorage({
   },
 })
 
+
+// Theme resolver
 export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
