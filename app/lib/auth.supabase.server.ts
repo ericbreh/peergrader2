@@ -35,12 +35,18 @@ export const signOut = async (
 
 export const getUser = async (request: Request) => {
     const supabase = createSupabaseServerClient(request);
-    const {
-        data: { session },
-    } = await supabase.client.auth.getSession();
 
-    return session?.user || null;
+    const { data: { user } } = await supabase.client.auth.getUser();
+    return user || null;
 };
+
+export async function requireUser(request: Request) {
+    const user = await getUser(request);
+    if (!user) {
+        throw redirect("/login");
+    }
+    return user;
+}
 
 export const isUserLoggedIn = async (request: Request) => {
     const supabase = createSupabaseServerClient(request);

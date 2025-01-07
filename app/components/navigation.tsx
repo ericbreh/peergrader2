@@ -1,4 +1,4 @@
-import { Link, useMatches } from "@remix-run/react";
+import { Link, useLoaderData, useMatches } from "@remix-run/react";
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -6,9 +6,15 @@ import {
     NavigationMenuList,
 } from "~/components/ui/navigation-menu";
 import { ModeToggle } from "./mode-toggle";
+import { UserProfile } from "./user-profile";
+import { User } from "~/types";
 
-export function Navigation() {
-    // TODO: I'm not sure if this is the most optimal, look into different options. Parent layout?
+interface NavigationProps {
+    user: User;
+}
+
+export function Navigation({ user }: NavigationProps) {
+    // TODO: I'm not sure if this is the most optimal way to display navbar on some pages but not others, look into different options
     const matches = useMatches();
     const currentPath = matches[matches.length - 1].pathname;
     const hideNavRoutes = ["/login", "/signup"];
@@ -29,13 +35,19 @@ export function Navigation() {
                 </NavigationMenu>
 
                 <div className="ml-auto flex items-center space-x-4">
-                    <Link to="/signup" className="text-sm font-medium">
-                        Sign Up
-                    </Link>
-                    <Link to="/login" className="text-sm font-medium">
-                        Login
-                    </Link>
                     <ModeToggle />
+                    {user ? (
+                        <UserProfile user={user} />
+                    ) : (
+                        <div className="flex items-center gap-4">
+                            <Link to="/signup" className="text-sm font-medium">
+                                Sign Up
+                            </Link>
+                            <Link to="/login" className="text-sm font-medium">
+                                Login
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>

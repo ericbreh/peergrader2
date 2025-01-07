@@ -1,21 +1,39 @@
-import { Link } from "@remix-run/react";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
+import { isUserLoggedIn } from "~/lib/auth.supabase.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const loggedIn = await isUserLoggedIn(request);
+  return loggedIn;
+}
 
 export default function Index() {
+  const loggedIn = useLoaderData<typeof loader>()
   return (
     <><div>
       <header className="text-center py-48 border-b">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">PeerGrader</h1>
         <p className="leading-7 [&:not(:first-child)]:mt-6">Revolutionize Grading with PeerGrader: A Modern Platform for Streamlined Feedback</p>
-        <div className="py-10">
-          <Button asChild className="mx-2">
-            <Link to="/signup">Sign Up</Link>
-          </Button>
-          <Button asChild className="mx-2">
-            <Link to="/login">Log In</Link>
-          </Button>
-        </div>
+
+        {loggedIn ? (
+          <div className="py-10">
+            <Button asChild className="mx-2">
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
+          </div>
+        ) : (
+          <div className="py-10">
+            <Button asChild className="mx-2">
+              <Link to="/signup">Sign Up</Link>
+            </Button>
+            <Button asChild className="mx-2">
+              <Link to="/login">Log In</Link>
+            </Button>
+          </div>
+        )}
+
       </header>
       <main>
         <section className="flex flex-col items-center border-b my-8 pb-8">

@@ -1,30 +1,17 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase.server";
 import { useLoaderData } from "@remix-run/react";
 import type { Course } from "~/types";
+import { requireUser } from "~/lib/auth.supabase.server";
+import { getUserCourses } from "~/lib/queries.server";
 
 
 // Loader function to fetch user courses
 export async function loader({ request }: LoaderFunctionArgs) {
+    const user = await requireUser(request);
     const supabase = createSupabaseServerClient(request);
-    const { data: { user } } = await supabase.client.auth.getUser();
-
-    if (!user) {
-        return redirect('/login');
-    }
-
-    const { data: courses, error } = await supabase.client
-        .from('courses')
-        .select('course_id, name, number')
-        .eq('owner', user.id);
-
-    if (error) {
-        console.error('Error fetching courses:', error);
-        return [];
-    }
-
-    return courses;
+    return getUserCourses(supabase, user.id);
 }
 
 export default function Dashboard() {

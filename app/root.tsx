@@ -15,12 +15,25 @@ import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 
 import { themeSessionResolver } from "./sessions.server"
 import { Navigation } from "./components/navigation";
+import { getUser } from "./lib/auth.supabase.server";
+import { createSupabaseServerClient } from "./lib/supabase.server";
+import getUserById from "./lib/queries.server";
 
-// Loader function to return the theme from the session storage
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request)
+
+  // Fetch user details if user is logged in
+  const userId = await getUser(request);
+  let user = null;
+  if (userId) {
+    const supabase = createSupabaseServerClient(request);
+    const response = await getUserById(supabase, userId.id);
+    user = response.data;
+  }
+
   return {
     theme: getTheme(),
+    user: user
   }
 }
 
@@ -71,7 +84,7 @@ export function App() {
       </head>
       <body className="h-screen overflow-hidden">
         <div className="flex h-full flex-col">
-          <Navigation />
+          <Navigation user={data.user} />
           <main className="flex-1 overflow-auto">
             <Outlet />
           </main>
