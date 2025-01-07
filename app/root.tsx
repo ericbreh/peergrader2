@@ -9,15 +9,14 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import "./tailwind.css";
-
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
-
 import { themeSessionResolver } from "./sessions.server"
 import { Navigation } from "./components/navigation";
 import { getUser } from "./lib/auth.supabase.server";
 import { createSupabaseServerClient } from "./lib/supabase.server";
 import getUserById from "./lib/queries.server";
+
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request)
@@ -35,16 +34,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     theme: getTheme(),
     user: user
   }
-}
-
-// ThemeProvider component to wrap the app with theme context
-export default function AppWithProviders() {
-  const data = useLoaderData<typeof loader>()
-  return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
-      <App />
-    </ThemeProvider>
-  )
 }
 
 // Links function to include external stylesheets
@@ -82,17 +71,23 @@ export function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body className="h-screen overflow-hidden">
-        <div className="flex h-full flex-col">
-          <Navigation user={data.user} />
-          <main className="flex-1 overflow-auto">
-            <Outlet />
-          </main>
-        </div>
+      <body>
+        <Navigation user={data.user} /> {/* TODO: Move navigation into a nested layout */}
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  )
+}
+
+// Wrap app with theme
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>()
+  return (
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <App />
+    </ThemeProvider>
   )
 }

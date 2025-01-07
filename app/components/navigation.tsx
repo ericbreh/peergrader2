@@ -14,7 +14,7 @@ interface NavigationProps {
 }
 
 export function Navigation({ user }: NavigationProps) {
-    // TODO: I'm not sure if this is the most optimal way to display navbar on some pages but not others, look into different options
+    // TODO: Remove after moved into nested layout
     const matches = useMatches();
     const currentPath = matches[matches.length - 1].pathname;
     const hideNavRoutes = ["/login", "/signup"];
