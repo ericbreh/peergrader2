@@ -33,7 +33,10 @@ export function UserProfile({ user }: UserProfileProps) {
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                        <AvatarImage /> {/* TODO: Make work */}
+                        <AvatarImage
+                            src={user.profile_image}
+                            alt={`${user.first_name}'s profile picture`}
+                        />
                         <AvatarFallback>PG</AvatarFallback>
                     </Avatar>
                 </Button>
