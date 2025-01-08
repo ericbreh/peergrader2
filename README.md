@@ -36,3 +36,11 @@ app/
 │   │           ├── _index.tsx
 │   │           └── grade.tsx
 ```
+
+## TODO
+
+* work on types
+* finish auth (oauth, signup)
+* teacher vs student
+* plan ui for all pages
+* clean database (tables and unnecessary functions)

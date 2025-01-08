@@ -6,7 +6,7 @@ import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "./sessions.server"
 import { getUser } from "./lib/auth.supabase.server";
 import { createSupabaseServerClient } from "./lib/supabase.server";
-import getUserById from "./lib/queries.server";
+import { getUserById } from "./lib/queries.server";
 import type { Route } from "./+types/root.ts";
 import { MainLayout } from "./components/layouts/main-layout";
 

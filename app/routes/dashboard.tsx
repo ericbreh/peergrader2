@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase.server";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { getUserCourses } from "~/lib/queries.server";
@@ -25,14 +25,16 @@ export default function Dashboard() {
             <PageContent>
                 <div className="grid grid-cols-3 gap-8">
                     {courses.map((course: Course) => (
-                        <Card key={course.course_id}>
-                            <CardHeader>
-                                <CardTitle>{course.name}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p>{course.number}</p>
-                            </CardContent>
-                        </Card>
+                        <Link to={`/courses/${course.course_id}`} key={course.course_id}>
+                            <Card className="transition-colors hover:bg-muted">
+                                <CardHeader>
+                                    <CardTitle>{course.name}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <span className="break-all">{course.course_id}</span>
+                                </CardContent>
+                            </Card>
+                        </Link>
                     ))}
                 </div>
             </PageContent>
