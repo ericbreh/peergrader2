@@ -4,11 +4,11 @@ import "./tailwind.css";
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "./sessions.server"
-import { Navigation } from "./components/navigation";
 import { getUser } from "./lib/auth.supabase.server";
 import { createSupabaseServerClient } from "./lib/supabase.server";
 import getUserById from "./lib/queries.server";
 import type { Route } from "./+types/root.ts";
+import { MainLayout } from "./components/layouts/main-layout";
 
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -65,8 +65,9 @@ export function App() {
         <Links />
       </head>
       <body>
-        <Navigation user={data.user} /> {/* TODO: Move navigation into a layout */}
-        <Outlet />
+        <MainLayout user={data.user}>
+          <Outlet />
+        </MainLayout>
         <ScrollRestoration />
         <Scripts />
       </body>
