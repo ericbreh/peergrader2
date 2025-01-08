@@ -1,8 +1,5 @@
 # Welcome to Peergrader
 
-* [Remix docs](https://remix.run/docs)
-* [shadcn ui docs](https://ui.shadcn.com/docs/installation/remix)
-
 ## To run development server
 
 ```tsx
@@ -18,8 +15,6 @@ VITE_SUPABASE_KEY="key"
 ```
 
 ## Route map rough idea
-
-* <https://remix.run/docs/en/main/discussion/routes>
 
 ```tsx
 app/
