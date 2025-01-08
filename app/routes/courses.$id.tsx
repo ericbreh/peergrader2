@@ -3,9 +3,12 @@ import { useLoaderData } from "react-router";
 import { getCourseData } from "~/lib/queries.server";
 import type { Route } from "../routes/+types/dashboard.ts";
 import { PageHeader, PageContent } from "~/components/layouts/main-layout";
+import type { Course } from "~/types";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 // Loader function to fetch user courses
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs): Promise<Course> {
     if (!params.id) {
         throw new Error("Course ID is required");
     }
@@ -15,6 +18,20 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export default function Dashboard() {
     const course = useLoaderData<typeof loader>();
+
+    if (!course) {
+        return (
+            <PageContent>
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                        Course not found. The course might have been deleted or you don't have access to it.
+                    </AlertDescription>
+                </Alert>
+            </PageContent>
+        );
+    }
 
     return (
         <>

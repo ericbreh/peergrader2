@@ -39,8 +39,8 @@ app/
 
 ## TODO
 
-* work on types
 * finish auth (oauth, signup)
-* teacher vs student
+* plan teacher vs student
 * plan ui for all pages
 * clean database (tables and unnecessary functions)
+* think about error handling

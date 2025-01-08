@@ -15,12 +15,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request)
 
   // Fetch user details if user is logged in
-  const userId = await getUser(request);
+  const supabaseUser = await getUser(request);
   let user = null;
-  if (userId) {
+  if (supabaseUser) {
     const supabase = createSupabaseServerClient(request);
-    const response = await getUserById(supabase, userId.id);
-    user = response.data;
+    const response = await getUserById(supabase, supabaseUser.id);
+    user = response;
   }
 
   return {

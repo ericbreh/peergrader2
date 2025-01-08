@@ -27,7 +27,7 @@ export function Navigation({ user }: NavigationProps) {
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <Link to="/" className="font-bold text-xl">
+                            <Link to="/dashboard" className="font-bold text-xl">
                                 PeerGrader
                             </Link>
                         </NavigationMenuItem>
