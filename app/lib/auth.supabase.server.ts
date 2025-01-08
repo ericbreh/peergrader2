@@ -1,4 +1,4 @@
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "react-router";
 import { createSupabaseServerClient } from "./supabase.server";
 
 export const signInWithPassword = async (
@@ -16,7 +16,7 @@ export const signInWithPassword = async (
         throw redirect(successRedirectPath, { headers: supabase.headers });
     }
 
-    return json({ error: error.message });
+    return { error: error.message };
 };
 
 export const signOut = async (
@@ -30,7 +30,7 @@ export const signOut = async (
         throw redirect(successRedirectPath, { headers: supabase.headers });
     }
 
-    return json({ error: error.message });
+    return { error: error.message };
 };
 
 export const getUser = async (request: Request) => {

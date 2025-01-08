@@ -1,5 +1,5 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { LoaderFunctionArgs } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
 import { isUserLoggedIn } from "~/lib/auth.supabase.server";

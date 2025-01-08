@@ -1,7 +1,7 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase.server";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { getUserCourses } from "~/lib/queries.server";
