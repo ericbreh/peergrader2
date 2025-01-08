@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { redirect } from "react-router";
 import { LoginForm } from "../components/login-form"
 import { isUserLoggedIn, signInWithPassword } from "~/lib/auth.supabase.server";
 import { useActionData } from "react-router";
@@ -6,9 +6,10 @@ import {
     Alert,
     AlertTitle,
 } from "~/components/ui/alert"
+import type { Route } from "../routes/+types/login.ts";
 
 // Loader function to check if the user is already logged in
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
     if (await isUserLoggedIn(request)) {
         throw redirect("/dashboard");
     }
@@ -17,7 +18,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 // Action function to handle user login
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: Route.ActionArgs) => {
     const error = await signInWithPassword(request, "/dashboard");
 
     return error;

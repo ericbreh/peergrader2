@@ -1,5 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
-import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from "react-router";
+import type { LinksFunction, MetaFunction } from "react-router";
 import "./tailwind.css";
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
@@ -8,9 +8,10 @@ import { Navigation } from "./components/navigation";
 import { getUser } from "./lib/auth.supabase.server";
 import { createSupabaseServerClient } from "./lib/supabase.server";
 import getUserById from "./lib/queries.server";
+import type { Route } from "./+types/root.ts";
 
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request)
 
   // Fetch user details if user is logged in
@@ -64,7 +65,7 @@ export function App() {
         <Links />
       </head>
       <body>
-        <Navigation user={data.user} /> {/* TODO: Move navigation into a nested layout */}
+        <Navigation user={data.user} /> {/* TODO: Move navigation into a layout */}
         <Outlet />
         <ScrollRestoration />
         <Scripts />

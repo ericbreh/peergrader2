@@ -1,14 +1,14 @@
-import { LoaderFunctionArgs } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase.server";
 import { useLoaderData } from "react-router";
 import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { getUserCourses } from "~/lib/queries.server";
+import type { Route } from "../routes/+types/dashboard.ts";
 
 
 // Loader function to fetch user courses
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
     const user = await requireUser(request);
     const supabase = createSupabaseServerClient(request);
     return getUserCourses(supabase, user.id);
