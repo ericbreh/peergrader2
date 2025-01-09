@@ -71,13 +71,9 @@ module.exports = {
         "plugin:import/recommended",
         "plugin:import/typescript",
       ],
-      rules: {
-        // "@typescript-eslint/explicit-function-return-type": ["error", {
-        //   allowExpressions: true,
-        //   allowHigherOrderFunctions: false,
-        //   allowTypedFunctionExpressions: true,
-        // }]
-      }
+      // rules: {
+        // "@typescript-eslint/explicit-function-return-type": "error",
+      // }
     },
 
     // Node

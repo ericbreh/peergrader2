@@ -19,8 +19,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   let user = null;
   if (supabaseUser) {
     const supabase = createSupabaseServerClient(request);
-    const response = await getUserById(supabase, supabaseUser.id);
-    user = response;
+    user = await getUserById(supabase, supabaseUser.id);
   }
 
   return {
