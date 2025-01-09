@@ -26,7 +26,7 @@ export default function Dashboard() {
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
                     <AlertDescription>
-                        Course not found. The course might have been deleted or you don't have access to it.
+                        Course not found. The course might have been deleted or you don&apos;t have access to it.
                     </AlertDescription>
                 </Alert>
             </PageContent>

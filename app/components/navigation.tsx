@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useMatches } from "react-router";
+import { Link, useMatches } from "react-router";
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -14,7 +14,6 @@ interface NavigationProps {
 }
 
 export function Navigation({ user }: NavigationProps) {
-    // TODO: Remove after moved into nested layout
     const matches = useMatches();
     const currentPath = matches[matches.length - 1].pathname;
     const hideNavRoutes = ["/login", "/signup"];

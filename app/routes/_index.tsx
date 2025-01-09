@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
 import { isUserLoggedIn } from "~/lib/auth.supabase.server";
 import type { Route } from "../routes/+types/_index.ts";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs): Promise<boolean> {
   const loggedIn = await isUserLoggedIn(request);
   return loggedIn;
 }

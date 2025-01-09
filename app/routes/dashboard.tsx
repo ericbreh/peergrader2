@@ -6,7 +6,7 @@ import { requireUser } from "~/lib/auth.supabase.server";
 import { getUserCourses } from "~/lib/queries.server";
 import type { Route } from "../routes/+types/dashboard.ts";
 import { PageHeader, PageContent } from "~/components/layouts/main-layout";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert.js";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 // Loader function to fetch user courses
@@ -48,7 +48,7 @@ export default function Dashboard() {
                                     <CardTitle>{course.name}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <span className="break-all">{course.course_id}</span>
+                                    <span className="break-all line-clamp-1">{course.course_id}</span>
                                 </CardContent>
                             </Card>
                         </Link>
