@@ -17,10 +17,10 @@ export async function getUserCourses(supabase: any, user: User): Promise<Course[
         return [];
     }
     if (user.is_teacher) {
-        const { data } = await supabase.rpc('get_teacher_courses', { user_id_param: user?.uid });
+        const { data } = await supabase.client.rpc('get_teacher_courses', { user_id_param: user?.uid });
         return (data ?? []) as Course[];
     } else {
-        const { data } = await supabase.rpc('get_courses_student', { user_id_param: user?.uid });
+        const { data } = await supabase.client.rpc('get_courses_student', { user_id_param: user?.uid });
         return (data ?? []) as Course[];
     }
 }
