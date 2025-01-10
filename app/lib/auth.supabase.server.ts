@@ -1,5 +1,41 @@
 import { redirect } from "react-router";
 import { createSupabaseServerClient } from "./supabase.server";
+import setUser from "./queries.server";
+
+export const signUp = async (
+    request: Request,
+    successRedirectPath: string
+) => {
+    const supabase = createSupabaseServerClient(request);
+    const formData = await request.formData();
+    const { data, error } = await supabase.client.auth.signUp({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+    })
+
+    if (error) {
+        return { error: error.message };
+    }
+
+    // If sign up is successful, add the user to the accounts table
+    let databaseError;
+    if (data.user) {
+        const isTeacher = formData.get("accountType") as string === "teacher";
+        databaseError = await setUser(supabase, {
+            uid: data.user.id,
+            email: data.user.email!,
+            is_teacher: isTeacher,
+            first_name: formData.get("firstName") as string,
+            last_name: formData.get("lastName") as string,
+            profile_image: undefined,
+        });
+
+        if (!databaseError) {
+            throw redirect(successRedirectPath, { headers: supabase.headers });
+        }
+    }
+    return { error: databaseError };
+}
 
 export const signInWithPassword = async (
     request: Request,

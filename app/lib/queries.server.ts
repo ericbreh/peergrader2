@@ -1,6 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User, Course } from '~/types';
 
+export default async function setUser(supabase: any, user: User) {
+    if (!user) {
+        return "error";
+    }
+    const { error } = await supabase.client
+        .from("accounts")
+        .upsert([
+            {
+                uid: user.uid,
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                is_teacher: user.is_teacher,
+            },
+        ])
+        .select()
+        .single();
+
+    return error;
+}
+
 export async function getUserById(supabase: any, userId: string): Promise<User> {
     const { data } = await supabase.client
         .from('accounts')
