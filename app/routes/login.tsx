@@ -1,6 +1,6 @@
 import { redirect, useActionData } from "react-router";
 import { LoginForm } from "../components/login-form"
-import { isUserLoggedIn, signInWithPassword } from "~/lib/auth.supabase.server";
+import { isUserLoggedIn, signInWithPassword, signInWithOAuth } from "~/lib/auth.supabase.server";
 import {
     Alert,
     AlertTitle,
@@ -18,9 +18,19 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 // Action function to handle user login
 export const action = async ({ request }: Route.ActionArgs) => {
-    const error = await signInWithPassword(request, "/dashboard");
+    console.log("login action");
+    const formData = await request.formData();
+    const actionType = formData.get("_action");
 
-    return error;
+    if (actionType === "google") {
+        return await signInWithOAuth(request, "/dashboard");
+    }
+
+    const credentials = {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string
+    };
+    return await signInWithPassword(request, credentials, "/dashboard");
 };
 
 export default function Login() {

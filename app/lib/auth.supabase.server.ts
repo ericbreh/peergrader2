@@ -39,14 +39,30 @@ export const signUp = async (
 
 export const signInWithPassword = async (
     request: Request,
+    credentials: { email: string; password: string },
     successRedirectPath: string
 ) => {
     const supabase = createSupabaseServerClient(request);
-    const formData = await request.formData();
     const { error } = await supabase.client.auth.signInWithPassword({
-        email: formData.get("email") as string,
-        password: formData.get("password") as string,
+        email: credentials.email,
+        password: credentials.password
     });
+
+    if (!error) {
+        throw redirect(successRedirectPath, { headers: supabase.headers });
+    }
+
+    return { error: error.message };
+};
+
+export const signInWithOAuth = async (
+    request: Request,
+    successRedirectPath: string
+) => {
+    const supabase = createSupabaseServerClient(request);
+    const { error } = await supabase.client.auth.signInWithOAuth({
+        provider: "google",
+    })
 
     if (!error) {
         throw redirect(successRedirectPath, { headers: supabase.headers });

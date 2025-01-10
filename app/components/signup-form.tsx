@@ -73,6 +73,7 @@ export function SignupForm({
                                     id="password"
                                     type="password"
                                     name="password"
+                                    placeholder="••••••••"
                                     required />
                             </div>
                             <div className="grid gap-2">
