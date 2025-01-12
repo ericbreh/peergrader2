@@ -9,7 +9,7 @@ import {
 } from "~/components/ui/card"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
-import { Form } from "react-router";
+import { Form, useNavigation } from "react-router";
 import {
     Select,
     SelectContent,
@@ -17,12 +17,16 @@ import {
     SelectTrigger,
     SelectValue,
 } from "~/components/ui/select"
+import { Loader2 } from "lucide-react"
 
 
 export function SignupForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+    const navigation = useNavigation();
+    const isSubmitting = navigation.formAction === "/signup";
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -92,9 +96,17 @@ export function SignupForm({
                             </div>
 
 
-                            <Button type="submit" className="w-full">
-                                Sign Up
+                            <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Signing up...
+                                    </>
+                                ) : (
+                                    "Sign Up"
+                                )}
                             </Button>
+
                             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
                                     OR

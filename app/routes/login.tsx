@@ -18,7 +18,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 // Action function to handle user login
 export const action = async ({ request }: Route.ActionArgs) => {
-    console.log("login action");
     const formData = await request.formData();
     const actionType = formData.get("_action");
 

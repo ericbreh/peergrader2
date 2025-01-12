@@ -1,4 +1,4 @@
-import { Form } from "react-router";
+import { Form, useNavigation } from "react-router";
 import {
     Avatar,
     AvatarFallback,
@@ -8,11 +8,9 @@ import { Button } from "~/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
 import { User } from "~/types";
@@ -22,6 +20,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ user }: UserProfileProps) {
+    const navigation = useNavigation();
 
     if (!user) {
         return null;
@@ -57,7 +56,7 @@ export function UserProfile({ user }: UserProfileProps) {
                 <DropdownMenuSeparator />
                 <Form method="post" action="/logout">
                     <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full cursor-pointer">
+                        <button type="submit" className="w-full cursor-pointer" disabled={navigation.formAction === "/logout"}>
                             Log out
                         </button>
                     </DropdownMenuItem>
