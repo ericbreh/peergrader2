@@ -13,7 +13,8 @@ export default [
         // routes where you need to be logged in
         layout("./routes/layouts/authenticated.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"),
-            route("courses/:id", "./routes/courses/course.tsx"),
+            route("courses/:id", "./routes/courses/course-id.tsx"),
+            route("courses/create", "./routes/courses/create.tsx"),
         ]),
     ]),
 

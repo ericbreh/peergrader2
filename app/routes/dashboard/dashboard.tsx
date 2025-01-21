@@ -1,5 +1,4 @@
 import { createSupabaseServerClient } from "~/lib/supabase.server.js";
-import { useLoaderData } from "react-router";
 import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server.js";
 import { getUserById, getUserCourses } from "~/lib/queries.server.js";
@@ -9,6 +8,8 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import CourseCard from "~/components/course-card";
 import { Separator } from "~/components/ui/separator";
+import { Link, useLoaderData } from "react-router";
+import { Button } from "~/components/ui/button";
 
 // Loader function to fetch user courses
 export async function loader({ request }: Route.LoaderArgs) {
@@ -22,22 +23,19 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
 }
 
+const CourseGrid = ({ title, courses }: { title: string, courses: NonNullable<Course>[] }) => (
+    <div className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {courses.map((course) => (
+                <CourseCard key={course.course_id} course={course} />
+            ))}
+        </div>
+    </div>
+);
+
 export default function Dashboard() {
     const data = useLoaderData<typeof loader>();
-
-    if (data.courses.length === 0) {
-        return (
-            <PageContent>
-                <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>
-                        No courses availible.
-                    </AlertDescription>
-                </Alert>
-            </PageContent>
-        );
-    }
 
     // sort courses into current and past
     const now = new Date();
@@ -52,38 +50,50 @@ export default function Dashboard() {
             return acc;
         }, { currentCourses: [] as NonNullable<Course>[], pastCourses: [] as NonNullable<Course>[] });
 
+    const hasCourses = currentCourses.length > 0 || pastCourses.length > 0;
+
     return (
         <>
             <PageHeader>
-                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                    {data.user?.is_teacher ? 'Teacher Dashboard' : 'Student Dashboard'}
-                </h1>
-            </PageHeader>
-            <PageContent>
-                <div className="space-y-4">
-                    <h2 className="text-2xl font-bold tracking-tight">Current Courses</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {currentCourses.map((course) => (
-                            <CourseCard key={course.course_id} course={course} />
-                        ))}
-                    </div>
+                <div className="flex justify-between items-center">
+                    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                        {data.user?.is_teacher ? 'Teacher Dashboard' : 'Student Dashboard'}
+                    </h1>
+                    {data.user?.is_teacher && (
+                        <Button asChild>
+                            <Link to="/courses/create">Create Course</Link>
+                        </Button>
+                    )}
                 </div>
+            </PageHeader>
 
-                {pastCourses.length > 0 && (
-                    <>
+            {!hasCourses && (
+                <PageContent>
+                    <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>No courses yet</AlertTitle>
+                        <AlertDescription>
+                            {data.user?.is_teacher ? 'Create a course to get started.' : 'Join a course to get started.'}
+                        </AlertDescription>
+                    </Alert>
+                </PageContent>
+            )}
+
+            {hasCourses && (
+                <PageContent>
+                    {currentCourses.length > 0 && (
+                        <CourseGrid title="Current Courses" courses={currentCourses} />
+                    )}
+
+                    {currentCourses.length > 0 && pastCourses.length > 0 && (
                         <Separator className="my-8" />
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold tracking-tight">Past Courses</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {pastCourses.map((course) => (
-                                    <CourseCard key={course.course_id} course={course} />
-                                ))}
-                            </div>
-                        </div>
-                    </>
-                )}
-            </PageContent>
+                    )}
+
+                    {pastCourses.length > 0 && (
+                        <CourseGrid title="Past Courses" courses={pastCourses} />
+                    )}
+                </PageContent>
+            )}
         </>
     );
-
 }
