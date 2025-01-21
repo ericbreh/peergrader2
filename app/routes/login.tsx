@@ -1,6 +1,6 @@
 import { redirect, useActionData } from "react-router";
 import { LoginForm } from "../components/login-form"
-import { isUserLoggedIn, signInWithPassword, signInWithOAuth } from "~/lib/auth.supabase.server";
+import { isUserLoggedIn, signInWithPassword } from "~/lib/auth.supabase.server";
 import {
     Alert,
     AlertTitle,
@@ -22,7 +22,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
     const actionType = formData.get("_action");
 
     if (actionType === "google") {
-        return await signInWithOAuth(request, "/dashboard");
+        return {
+            error: "Google sign-in is not yet available"
+        };
     }
 
     const credentials = {
