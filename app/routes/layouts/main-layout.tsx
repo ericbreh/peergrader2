@@ -1,16 +1,26 @@
 import { Navigation } from "../../components/navigation";
-import type { User } from "~/types";
+import { Outlet, useLoaderData } from "react-router";
+import { getUser } from "~/utils/auth.supabase.server";
+import { createSupabaseServerClient } from "~/utils/supabase.server";
+import { getUserById } from "~/utils/queries.server";
+import type { Route } from ".react-router/types/app/routes/layouts/+types/main-layout";
 
-interface MainLayoutProps {
-    children: React.ReactNode;
-    user: User;
+export async function loader({ request }: Route.LoaderArgs) {
+    const supabaseUser = await getUser(request);
+    let user = null;
+    if (supabaseUser) {
+        const supabase = createSupabaseServerClient(request);
+        user = await getUserById(supabase, supabaseUser.id);
+    }
+    return { user };
 }
 
-export function MainLayout({ children, user }: MainLayoutProps) {
+export default function MainLayout() {
+    const { user } = useLoaderData<typeof loader>();
     return (
         <>
             <Navigation user={user} />
-            {children}
+            <Outlet />
         </>
     );
 }

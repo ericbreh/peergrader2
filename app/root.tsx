@@ -4,27 +4,13 @@ import "./tailwind.css";
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "./sessions.server"
-import { getUser } from "./utils/auth.supabase.server";
-import { createSupabaseServerClient } from "./utils/supabase.server";
-import { getUserById } from "./utils/queries.server";
 import type { Route } from "./+types/root.ts";
-import { MainLayout } from "./routes/layouts/main-layout";
 
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { getTheme } = await themeSessionResolver(request)
-
-  // Fetch user details if user is logged in
-  const supabaseUser = await getUser(request);
-  let user = null;
-  if (supabaseUser) {
-    const supabase = createSupabaseServerClient(request);
-    user = await getUserById(supabase, supabaseUser.id);
-  }
-
   return {
     theme: getTheme(),
-    user: user
   }
 }
 
@@ -64,9 +50,7 @@ export function App() {
         <Links />
       </head>
       <body>
-        <MainLayout user={data.user}>
-          <Outlet />
-        </MainLayout>
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
       </body>

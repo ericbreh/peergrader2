@@ -9,9 +9,6 @@ import { AlertCircle } from "lucide-react";
 
 // Loader function to fetch user courses
 export async function loader({ request, params }: Route.LoaderArgs): Promise<Course> {
-    if (!params.id) {
-        throw new Error("Course ID is required");
-    }
     const supabase = createSupabaseServerClient(request);
     return getCourseData(supabase, params.id);
 }
