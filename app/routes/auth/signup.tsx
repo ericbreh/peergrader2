@@ -1,5 +1,5 @@
 import { redirect, useActionData } from "react-router";
-import { isUserLoggedIn, signUp } from "~/utils/auth.supabase.server.js";
+import { isUserLoggedIn, signUp } from "~/lib/auth.supabase.server.js";
 import {
     Alert,
     AlertTitle,

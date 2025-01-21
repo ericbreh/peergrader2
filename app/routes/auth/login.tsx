@@ -1,6 +1,6 @@
 import { redirect, useActionData } from "react-router";
 import { LoginForm } from "../../components/login-form"
-import { isUserLoggedIn, signInWithPassword } from "~/utils/auth.supabase.server";
+import { isUserLoggedIn, signInWithPassword } from "~/lib/auth.supabase.server";
 import {
     Alert,
     AlertTitle,

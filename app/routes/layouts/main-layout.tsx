@@ -1,8 +1,8 @@
 import { Navigation } from "../../components/navigation";
 import { Outlet, useLoaderData } from "react-router";
-import { getUser } from "~/utils/auth.supabase.server";
-import { createSupabaseServerClient } from "~/utils/supabase.server";
-import { getUserById } from "~/utils/queries.server";
+import { getUser } from "~/lib/auth.supabase.server";
+import { createSupabaseServerClient } from "~/lib/supabase.server";
+import { getUserById } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/layouts/+types/main-layout";
 
 export async function loader({ request }: Route.LoaderArgs) {

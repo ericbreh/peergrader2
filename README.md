@@ -19,3 +19,22 @@ create a `.env` file in the `peergrader2` folder
 VITE_SUPABASE_URL="url"
 VITE_SUPABASE_KEY="key"
 ```
+
+## Notes
+
+### Dashboard
+
+* What data to show?
+* Different data for teacher vs student?
+* Cards vs list?
+* Only courses or also active assignments?
+* Differentiate active vs old classes. Show only current classes?
+
+### Course
+
+* What to show?
+
+### Used functions
+
+* get_courses_student
+* get_courses_teacher

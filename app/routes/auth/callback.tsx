@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "~/utils/supabase.server.js";
+import { createSupabaseServerClient } from "~/lib/supabase.server.js";
 import { redirect } from "react-router";
 import type { Route } from ".react-router/types/app/routes/auth/+types/callback.ts";
 
