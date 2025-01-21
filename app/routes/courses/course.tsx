@@ -1,8 +1,8 @@
-import { createSupabaseServerClient } from "~/lib/supabase.server";
+import { createSupabaseServerClient } from "~/utils/supabase.server.js";
 import { useLoaderData } from "react-router";
-import { getCourseData } from "~/lib/queries.server";
-import type { Route } from "../routes/+types/dashboard.ts";
-import { PageHeader, PageContent } from "~/components/layouts/main-layout";
+import { getCourseData } from "~/utils/queries.server.js";
+import type { Route } from ".react-router/types/app/routes/courses/+types/course";
+import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
 import type { Course } from "~/types";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";

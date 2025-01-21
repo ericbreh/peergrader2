@@ -4,11 +4,11 @@ import "./tailwind.css";
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "./sessions.server"
-import { getUser } from "./lib/auth.supabase.server";
-import { createSupabaseServerClient } from "./lib/supabase.server";
-import { getUserById } from "./lib/queries.server";
+import { getUser } from "./utils/auth.supabase.server";
+import { createSupabaseServerClient } from "./utils/supabase.server";
+import { getUserById } from "./utils/queries.server";
 import type { Route } from "./+types/root.ts";
-import { MainLayout } from "./components/layouts/main-layout";
+import { MainLayout } from "./routes/layouts/main-layout";
 
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -78,7 +78,7 @@ export function App() {
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
   return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/set-theme">
       <App />
     </ThemeProvider>
   )

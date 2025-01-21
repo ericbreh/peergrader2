@@ -1,8 +1,8 @@
 import { Link, useLoaderData } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { isUserLoggedIn } from "~/lib/auth.supabase.server";
-import type { Route } from "../routes/+types/_index.ts";
+import { isUserLoggedIn } from "~/utils/auth.supabase.server.js";
+import type { Route } from "./+types/landing.js";
 
 export async function loader({ request }: Route.LoaderArgs): Promise<boolean> {
   const loggedIn = await isUserLoggedIn(request);

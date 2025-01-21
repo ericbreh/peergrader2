@@ -2,7 +2,6 @@ import { Link, useMatches } from "react-router";
 import {
     NavigationMenu,
     NavigationMenuItem,
-    NavigationMenuLink,
     NavigationMenuList,
 } from "~/components/ui/navigation-menu";
 import { ModeToggle } from "./mode-toggle";

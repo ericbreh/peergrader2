@@ -1,4 +1,4 @@
-import { Navigation } from "../navigation";
+import { Navigation } from "../../components/navigation";
 import type { User } from "~/types";
 
 interface MainLayoutProps {

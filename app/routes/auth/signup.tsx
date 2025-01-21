@@ -1,11 +1,11 @@
 import { redirect, useActionData } from "react-router";
-import { LoginForm } from "../components/login-form"
-import { isUserLoggedIn, signInWithPassword } from "~/lib/auth.supabase.server";
+import { isUserLoggedIn, signUp } from "~/utils/auth.supabase.server.js";
 import {
     Alert,
     AlertTitle,
 } from "~/components/ui/alert"
-import type { Route } from "../routes/+types/login.ts";
+import type { Route } from ".react-router/types/app/routes/auth/+types/signup";
+import { SignupForm } from "~/components/signup-form";
 
 // Loader function to check if the user is already logged in
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -16,25 +16,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     return null;
 };
 
-// Action function to handle user login
+// Action function to handle user sign up
 export const action = async ({ request }: Route.ActionArgs) => {
-    const formData = await request.formData();
-    const actionType = formData.get("_action");
+    const error = await signUp(request, "/dashboard");
 
-    if (actionType === "google") {
-        return {
-            error: "Google sign-in is not yet available"
-        };
-    }
-
-    const credentials = {
-        email: formData.get("email") as string,
-        password: formData.get("password") as string
-    };
-    return await signInWithPassword(request, credentials, "/dashboard");
+    return error;
 };
 
-export default function Login() {
+export default function Signup() {
     const actionResponse = useActionData<typeof action>();
     return (
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -44,7 +33,7 @@ export default function Login() {
                         <AlertTitle>{actionResponse.error}</AlertTitle>
                     </Alert>
                 )}
-                <LoginForm />
+                <SignupForm />
             </div>
         </div>
     )

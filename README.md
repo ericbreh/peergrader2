@@ -2,8 +2,9 @@
 
 ## TODO
 
+* layout
 * plan ui for all pages
-* finish auth (oauth, signup)
+* finish auth (oauth, signup, testing)
 * clean database (tables and unnecessary functions)
 
 ## To run development server

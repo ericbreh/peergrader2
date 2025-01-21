@@ -1,6 +1,6 @@
-import { createSupabaseServerClient } from "~/lib/supabase.server";
+import { createSupabaseServerClient } from "~/utils/supabase.server.js";
 import { redirect } from "react-router";
-import type { Route } from "../routes/+types/login.callback.js";
+import type { Route } from ".react-router/types/app/routes/auth/+types/callback.ts";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
     const url = new URL(request.url);
