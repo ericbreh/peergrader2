@@ -6,14 +6,26 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { getUserById } from "~/lib/queries.server";
+import { CreateCourseForm } from "~/components/create-course-form";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export const loader = async ({ request }: Route.LoaderArgs) => {
     const supabaseUser = await requireUser(request);
     const supabase = createSupabaseServerClient(request);
     const user = await getUserById(supabase, supabaseUser.id);
     return {
         user: user,
     }
+}
+
+export const action = async ({ request }: Route.ActionArgs) => {
+    const formData = await request.formData();
+    const data = {
+        name: formData.get("name") as string,
+        number: formData.get("number") as string,
+        start_date: formData.get("start_date") as string,
+        end_date: formData.get("end_date") as string,
+    };
+    console.log(data);
 }
 
 export default function Create() {
@@ -37,8 +49,11 @@ export default function Create() {
         <>
             <PageHeader>
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create Course</h1>
-                {/* name, number, start, end */}
             </PageHeader>
+            <PageContent>
+                <CreateCourseForm /> {/* name, number, start, end */}
+            </PageContent>
+
         </>
     );
 }

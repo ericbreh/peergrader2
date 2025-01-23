@@ -20,6 +20,7 @@ VITE_SUPABASE_KEY="key"
 * finish auth (oauth, signup, forgot password, test)
 * clean database (tables and unnecessary functions)
 * where to generate ids, join code...
+* client side form validation, zod?
 
 ## MVP
 
