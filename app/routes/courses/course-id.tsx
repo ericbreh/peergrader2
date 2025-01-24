@@ -1,4 +1,3 @@
-import { createSupabaseServerClient } from "~/lib/supabase.server.js";
 import { useLoaderData } from "react-router";
 import { getCourseData } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/courses/+types/course-id";
@@ -8,9 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 // Loader function to fetch user courses
-export async function loader({ request, params }: Route.LoaderArgs): Promise<Course> {
-    const supabase = createSupabaseServerClient(request);
-    return getCourseData(supabase, params.id);
+export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
+    return getCourseData(params.id);
 }
 
 export default function Course() {

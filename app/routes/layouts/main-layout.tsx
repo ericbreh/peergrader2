@@ -1,7 +1,6 @@
 import { Navigation } from "../../components/navigation";
 import { Outlet, useLoaderData } from "react-router";
 import { getUser } from "~/lib/auth.supabase.server";
-import { createSupabaseServerClient } from "~/lib/supabase.server";
 import { getUserById } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/layouts/+types/main-layout";
 
@@ -9,8 +8,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     const supabaseUser = await getUser(request);
     let user = null;
     if (supabaseUser) {
-        const supabase = createSupabaseServerClient(request);
-        user = await getUserById(supabase, supabaseUser.id);
+        user = await getUserById(supabaseUser.id);
     }
     return { user };
 }

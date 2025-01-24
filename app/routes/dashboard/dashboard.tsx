@@ -1,4 +1,3 @@
-import { createSupabaseServerClient } from "~/lib/supabase.server.js";
 import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server.js";
 import { getUserById, getUserCourses } from "~/lib/queries.server.js";
@@ -14,9 +13,8 @@ import { Button } from "~/components/ui/button";
 // Loader function to fetch user courses
 export async function loader({ request }: Route.LoaderArgs) {
     const supabaseUser = await requireUser(request);
-    const supabase = createSupabaseServerClient(request);
-    const user = await getUserById(supabase, supabaseUser.id);
-    const courses = await getUserCourses(supabase, user);
+    const user = await getUserById(supabaseUser.id);
+    const courses = await getUserCourses(user);
     return {
         courses: courses,
         user: user,

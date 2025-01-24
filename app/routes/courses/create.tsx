@@ -1,4 +1,3 @@
-import { createSupabaseServerClient } from "~/lib/supabase.server.js";
 import { useLoaderData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/+types/create";
 import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
@@ -10,8 +9,7 @@ import { CreateCourseForm } from "~/components/create-course-form";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
     const supabaseUser = await requireUser(request);
-    const supabase = createSupabaseServerClient(request);
-    const user = await getUserById(supabase, supabaseUser.id);
+    const user = await getUserById(supabaseUser.id);
     return {
         user: user,
     }

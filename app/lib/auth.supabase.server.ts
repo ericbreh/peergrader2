@@ -21,7 +21,7 @@ export const signUp = async (
     let databaseError;
     if (data.user) {
         const isTeacher = formData.get("accountType") as string === "teacher";
-        databaseError = await setUser(supabase, {
+        databaseError = await setUser({
             uid: data.user.id,
             email: data.user.email!,
             is_teacher: isTeacher,
