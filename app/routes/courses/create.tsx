@@ -1,10 +1,11 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, redirect, useActionData } from "react-router";
+import crypto from "crypto";
 import type { Route } from ".react-router/types/app/routes/courses/+types/create";
 import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
-import { getUserById } from "~/lib/queries.server";
+import { createCourse, getUserById } from "~/lib/queries.server";
 import { CreateCourseForm } from "~/components/create-course-form";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -16,18 +17,30 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 }
 
 export const action = async ({ request }: Route.ActionArgs) => {
+    const supabaseUser = await requireUser(request);
     const formData = await request.formData();
-    const data = {
-        name: formData.get("name") as string,
-        number: formData.get("number") as string,
-        start_date: formData.get("start_date") as string,
-        end_date: formData.get("end_date") as string,
-    };
-    console.log(data);
+
+    const course_id = crypto.randomUUID();
+
+    const { error } = await createCourse(
+        course_id,
+        formData.get("name") as string,
+        supabaseUser.id,
+        formData.get("number") as string,
+        formData.get("start_date") as string,
+        formData.get("end_date") as string
+    );
+
+    if (error) {
+        return { error: error.message };
+    }
+
+    return redirect(`/courses/${course_id}`);
 }
 
 export default function Create() {
     const data = useLoaderData<typeof loader>();
+    const actionResponse = useActionData<typeof action>();
 
     if (!data.user?.is_teacher) {
         return (
@@ -50,6 +63,11 @@ export default function Create() {
             </PageHeader>
             <PageContent>
                 <div className="flex-1 lg:max-w-2xl">
+                    {actionResponse?.error && (
+                        <Alert variant="destructive" className="mb-2">
+                            <AlertTitle>{actionResponse.error}</AlertTitle>
+                        </Alert>
+                    )}
                     <CreateCourseForm /> {/* name, number, start, end */}
                 </div>
             </PageContent>

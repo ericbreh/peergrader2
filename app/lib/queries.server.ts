@@ -60,3 +60,28 @@ export async function getCourseData(course_id: string): Promise<Course> {
 
     return data as Course;
 }
+
+export async function createCourse(
+    course_id: string,
+    name: string,
+    owner: string,
+    number: string,
+    start_date: string,
+    end_date: string
+) {
+    const supabase = createSupabaseServerClient();
+    const { error } = await supabase.client
+        .from('courses')
+        .insert([
+            {
+                course_id,
+                name,
+                owner,
+                number,
+                start_date,
+                end_date
+            }
+        ])
+
+    return { error };
+}
