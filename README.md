@@ -19,8 +19,6 @@ VITE_SUPABASE_KEY="key"
 * plan ui for all pages
 * finish auth (oauth, signup, forgot password, test)
 * clean database (tables and unnecessary functions)
-* where to generate ids, join code...
-* client side form validation, zod?
 
 ## MVP
 
@@ -36,6 +34,9 @@ VITE_SUPABASE_KEY="key"
   * View grades
 
 ## Notes
+
+* where to generate ids, join code...
+* client side form validation, zod?
 
 ### Dashboard
 

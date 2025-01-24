@@ -23,28 +23,29 @@ export function CreateCourseForm() {
         <Form method="post">
             <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                    <Label>Course Name</Label>
-                    <Input
-                        id="name"
-                        type="text"
-                        name="name"
-                        placeholder="Intro to Computer Science"
-                        required
-                    />
-                </div>
-                <div className="grid gap-2">
                     <Label>Course Number</Label>
                     <Input
                         id="number"
                         type="text"
                         name="number"
-                        placeholder="CSE 101"
+                        placeholder="eg. CSE 101"
+                        required
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label>Course Name</Label>
+                    <Input
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="eg. Intro to Computer Science"
+                        required
                     />
                 </div>
                 <div className="grid gap-2">
                     <Label>Course Duration</Label>
-                    <input type="hidden" name="start_date" value={date?.from?.toISOString() ?? ''} />
-                    <input type="hidden" name="end_date" value={date?.to?.toISOString() ?? ''} />
+                    <input type="hidden" name="start_date" value={date?.from?.toISOString().split('T')[0] ?? ''} />
+                    <input type="hidden" name="end_date" value={date?.to?.toISOString().split('T')[0] ?? ''} />
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
@@ -76,7 +77,7 @@ export function CreateCourseForm() {
                                 defaultMonth={date?.from}
                                 selected={date}
                                 onSelect={setDate}
-                                numberOfMonths={2}
+                                numberOfMonths={3}
                             />
                         </PopoverContent>
                     </Popover>

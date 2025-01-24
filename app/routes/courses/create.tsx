@@ -51,7 +51,9 @@ export default function Create() {
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create Course</h1>
             </PageHeader>
             <PageContent>
-                <CreateCourseForm /> {/* name, number, start, end */}
+                <div className="flex-1 lg:max-w-2xl">
+                    <CreateCourseForm /> {/* name, number, start, end */}
+                </div>
             </PageContent>
 
         </>

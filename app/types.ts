@@ -13,7 +13,7 @@ export type Course = {
   owner: string;
   created_at: string;
   join_code: string;
-  number?: string;
-  start_date?: string;
-  end_date?: string;
+  number: string;
+  start_date: string;
+  end_date: string;
 } | null
