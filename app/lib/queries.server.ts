@@ -66,8 +66,8 @@ export async function createCourse(
     name: string,
     owner: string,
     number: string,
-    start_date: string,
-    end_date: string
+    start_date: Date,
+    end_date: Date
 ) {
     const supabase = createSupabaseServerClient();
     const { error } = await supabase.client

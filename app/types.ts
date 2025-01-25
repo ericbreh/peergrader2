@@ -14,6 +14,6 @@ export type Course = {
   created_at: string;
   join_code: string;
   number: string;
-  start_date: string;
-  end_date: string;
+  start_date: Date;
+  end_date: Date;
 } | null
