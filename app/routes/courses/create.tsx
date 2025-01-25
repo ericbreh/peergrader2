@@ -129,7 +129,6 @@ export default function Create() {
                 <div className="flex-1 lg:max-w-2xl">
                     <Form onSubmit={handleSubmit} method="POST">
                         <div className="flex flex-col gap-6">
-
                             <div className="grid gap-2">
                                 <Label>Course Number</Label>
                                 <Input
