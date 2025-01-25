@@ -9,6 +9,7 @@ import CourseCard from "~/components/course-card";
 import { Separator } from "~/components/ui/separator";
 import { Link, useLoaderData } from "react-router";
 import { Button } from "~/components/ui/button";
+import { JoinCourseDialog } from "~/components/join-course-dialog";
 
 // Loader function to fetch user courses
 export async function loader({ request }: Route.LoaderArgs) {
@@ -57,10 +58,12 @@ export default function Dashboard() {
                     <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                         {data.user?.is_teacher ? 'Teacher Dashboard' : 'Student Dashboard'}
                     </h1>
-                    {data.user?.is_teacher && (
+                    {data.user?.is_teacher ? (
                         <Button asChild>
                             <Link to="/courses/create">Create Course</Link>
                         </Button>
+                    ) : (
+                        <JoinCourseDialog />
                     )}
                 </div>
             </PageHeader>

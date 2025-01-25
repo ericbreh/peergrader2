@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/+types/create";
 import { PageHeader, PageContent } from "~/routes/layouts/main-layout";

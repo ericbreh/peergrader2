@@ -11,10 +11,12 @@ export default [
         index("./routes/landing.tsx"),
 
         // routes where you need to be logged in
+        // TODO: need to be teacher/student/owner
         layout("./routes/layouts/authenticated.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"),
             route("courses/:id", "./routes/courses/course-id.tsx"),
             route("courses/create", "./routes/courses/create.tsx"),
+            route("courses/join", "./routes/courses/join.tsx"),
         ]),
     ]),
 

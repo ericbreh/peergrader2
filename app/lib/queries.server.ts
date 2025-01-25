@@ -85,3 +85,37 @@ export async function createCourse(
 
     return { error };
 }
+
+export async function joinCourse(course_id: string, uid: string) {
+    const supabase = createSupabaseServerClient();
+    const { error } = await supabase.client
+        .from('account_courses')
+        .insert([
+            {
+                course_id,
+                uid
+            }
+        ])
+
+    return error ? { error } : { course_id };
+}
+
+export async function joinCourseFromCode(join_code: string, uid: string) {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase.client
+        .from('courses')
+        .select('course_id')
+        .eq('join_code', join_code)
+        .single();
+
+    if (error) {
+        return { error };
+    }
+
+    if (!data) {
+        return { error: 'Course not found' };
+    }
+
+    const result = await joinCourse(data.course_id, uid);
+    return result.error ? { error: result.error } : { course_id: data.course_id };
+}

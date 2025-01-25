@@ -16,9 +16,10 @@ VITE_SUPABASE_KEY="key"
 
 ## TODO
 
-* plan ui for all pages
-* finish auth (oauth, signup, forgot password, test)
+* finish auth (oauth, signup, forgot password, test, validate on client)
 * clean database (tables and unnecessary functions)
+* teacher / student layout
+* error boundary
 
 ## MVP
 
@@ -34,16 +35,6 @@ VITE_SUPABASE_KEY="key"
   * View grades
 
 ## Notes
-
-* where to generate ids, join code...
-* client side form validation, zod?
-
-### Dashboard
-
-* What data to show? Different data for teacher vs student?
-* Differentiate active vs old classes. Show only current classes?
-
-### Course
 
 * Start / end date vs "term" (fall, winter, spring)
 

@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Link } from "react-router";
 import { CalendarIcon, HashIcon } from "lucide-react";
 import type { Course } from "~/types";
+import { format } from "date-fns";
 
 interface CourseCardProps {
     course: NonNullable<Course>;
@@ -25,8 +26,8 @@ export default function CourseCard({ course }: CourseCardProps) {
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CalendarIcon className="h-4 w-4" />
                             <span>
-                                {new Date(course.start_date).toLocaleDateString()}
-                                {course.end_date && ` - ${new Date(course.end_date).toLocaleDateString()}`}
+                                {format(new Date(course.start_date), 'PP')}
+                                {course.end_date && ` - ${format(new Date(course.end_date), 'PP')}`}
                             </span>
                         </div>
                     )}
