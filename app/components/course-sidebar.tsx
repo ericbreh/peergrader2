@@ -42,7 +42,7 @@ const items = [
 
 export function CourseSidebar() {
     return (
-        <Sidebar variant="floating">
+        <Sidebar variant="sidebar">
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
