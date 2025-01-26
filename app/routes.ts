@@ -14,7 +14,11 @@ export default [
         // no need for teacher/student/course-owner layouts, just protect on the page
         layout("./routes/layouts/authenticated.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"),
-            route("courses/:id", "./routes/courses/course-id.tsx"),
+
+            // course page sidebar
+            layout("./routes/layouts/course-layout.tsx", [
+                route("courses/:id", "./routes/courses/course-id.tsx"),
+            ]),
             route("courses/create", "./routes/courses/create.tsx"),
             route("courses/join", "./routes/courses/join.tsx"),
         ]),
