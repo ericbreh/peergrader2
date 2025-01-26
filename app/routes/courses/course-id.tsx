@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { getCourseData } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/courses/+types/course-id";
 import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { format } from "date-fns";
+import { Button } from "~/components/ui/button";
 
 // Loader function to fetch user courses
 export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
@@ -33,7 +34,14 @@ export default function Course() {
     return (
         <>
             <PageHeader>
-                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{course.name}</h1>
+                <div className="flex justify-between items-center">
+                    <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+                        {course.name}
+                    </h2>
+                    <Button asChild>
+                        <Link to="/courses/assignments">Create Assignment</Link>
+                    </Button>
+                </div>
             </PageHeader>
             <PageContent>
                 <div className="grid gap-6">

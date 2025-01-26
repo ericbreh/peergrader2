@@ -24,7 +24,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 const CourseGrid = ({ title, courses }: { title: string, courses: NonNullable<Course>[] }) => (
     <div className="space-y-4">
-        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {courses.map((course) => (
                 <CourseCard key={course.course_id} course={course} />
@@ -55,9 +55,9 @@ export default function Dashboard() {
         <>
             <PageHeader>
                 <div className="flex justify-between items-center">
-                    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                        {data.user?.is_teacher ? 'Teacher Dashboard' : 'Student Dashboard'}
-                    </h1>
+                    <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+                        Dashboard
+                    </h2>
                     {data.user?.is_teacher ? (
                         <Button asChild>
                             <Link to="/courses/create">Create Course</Link>

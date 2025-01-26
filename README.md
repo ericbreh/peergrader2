@@ -18,8 +18,6 @@ VITE_SUPABASE_KEY="key"
 
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * clean database (tables and unnecessary functions)
-* teacher / student layout
-* error boundary
 
 ## MVP
 

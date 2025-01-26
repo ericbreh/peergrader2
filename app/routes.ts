@@ -11,7 +11,7 @@ export default [
         index("./routes/landing.tsx"),
 
         // routes where you need to be logged in
-        // TODO: need to be teacher/student/owner
+        // no need for teacher/student/course-owner layouts, just protect on the page
         layout("./routes/layouts/authenticated.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"),
             route("courses/:id", "./routes/courses/course-id.tsx"),

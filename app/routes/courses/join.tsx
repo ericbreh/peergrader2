@@ -7,7 +7,6 @@ import { JoinCourseDialogFormData, resolver } from "~/components/join-course-dia
 
 
 export async function action({ request }: Route.ActionArgs) {
-    console.log("action");
     const { errors, data, receivedValues: defaultValues } =
         await getValidatedFormData<JoinCourseDialogFormData>(request, resolver);
     if (errors) {
@@ -15,11 +14,8 @@ export async function action({ request }: Route.ActionArgs) {
     }
     const user = await requireUser(request);
     const result = await joinCourseFromCode(data.joinCode, user.id);
-    // TODO: test an error from this
-    // 606923
 
     if (result.error) {
-        console.log("error", result.error);
         return { error: "Invalid course code" };
     }
 
