@@ -19,6 +19,7 @@ import { useRemixForm } from "remix-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { Label } from "./ui/label";
+import { Loader2 } from "lucide-react";
 
 
 export const JoinCourseDialogSchema = zod.object({
@@ -37,11 +38,11 @@ export function JoinCourseDialog() {
     const {
         handleSubmit,
         formState: { errors },
-        register,
-        
+        setValue,
     } = useRemixForm<JoinCourseDialogFormData>({
         mode: "onSubmit",
         resolver,
+        fetcher
     });
 
     return (
@@ -58,7 +59,10 @@ export function JoinCourseDialog() {
                 </DialogHeader>
                 <fetcher.Form onSubmit={handleSubmit} method="post" action="/courses/join">
                     <div className="grid gap-4 py-4">
-                        <InputOTP maxLength={6} {...register("joinCode")}>
+                        <InputOTP
+                            maxLength={6}
+                            onChange={(value) => setValue('joinCode', value)}
+                        >
                             <InputOTPGroup>
                                 <InputOTPSlot index={0} />
                                 < InputOTPSlot index={1} />
@@ -73,7 +77,16 @@ export function JoinCourseDialog() {
                         )}
                     </div>
                     <DialogFooter>
-                        <Button type="submit">{busy ? "Joining..." : "Join"}</Button>
+                        <Button type="submit" disabled={busy}>
+                            {busy ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Joining...
+                                </>
+                            ) : (
+                                "Join"
+                            )}
+                        </Button>
                     </DialogFooter>
 
                     {fetcher.data?.error && (
