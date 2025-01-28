@@ -123,7 +123,7 @@ export default function Create() {
   return (
     <>
       <PageHeader>
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create Course</h1>
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create Assignment</h1>
       </PageHeader>
       <PageContent>
         <div className="flex-1 lg:max-w-2xl">
