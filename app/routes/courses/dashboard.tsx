@@ -16,20 +16,6 @@ export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
 export default function Course() {
     const course = useLoaderData<typeof loader>();
 
-    if (!course) {
-        return (
-            <PageContent>
-                <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>
-                        Course not found. The course might have been deleted or you don&apos;t have access to it.
-                    </AlertDescription>
-                </Alert>
-            </PageContent>
-        );
-    }
-
     return (
         <>
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-6">

@@ -9,7 +9,7 @@ import { UserProfile } from "./user-profile";
 import { User } from "~/types";
 
 interface NavigationProps {
-  user: User;
+  user: User | null;
 }
 
 export function Navigation({ user }: NavigationProps) {

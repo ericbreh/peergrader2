@@ -16,13 +16,11 @@ VITE_SUPABASE_KEY="key"
 
 ## TODO
 
-* make types not nullable
-* rename files? courses-dashboard, courses-students, ect? maybe
-* student/teacher/owner layouts also display different items on sidebar
+* student/teacher/owner layouts
+* display different items on sidebar
 * finish auth (oauth, signup, forgot password, test, validate on client)
-* clean database (tables and unnecessary functions)
 * make standardized errors
-* make course switcher
+* clean database (tables and unnecessary functions)
 
 ## MVP
 

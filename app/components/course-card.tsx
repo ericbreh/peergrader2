@@ -5,7 +5,7 @@ import type { Course } from "~/types";
 import { format } from "date-fns";
 
 interface CourseCardProps {
-    course: NonNullable<Course>;
+    course: Course;
 }
 
 export default function CourseCard({ course }: CourseCardProps) {

@@ -5,7 +5,7 @@ export type User = {
   first_name: string;
   last_name: string;
   profile_image?: string;
-} | null
+}
 
 export type Course = {
   course_id: string;
@@ -16,4 +16,4 @@ export type Course = {
   number: string;
   start_date: Date;
   end_date: Date;
-} | null
+}

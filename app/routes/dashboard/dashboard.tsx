@@ -22,7 +22,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-const CourseGrid = ({ title, courses }: { title: string, courses: NonNullable<Course>[] }) => (
+const CourseGrid = ({ title, courses }: { title: string, courses: Course[] }) => (
     <div className="space-y-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -39,7 +39,7 @@ export default function Dashboard() {
     // sort courses into current and past
     const now = new Date();
     const { currentCourses, pastCourses } = data.courses
-        .filter((course): course is NonNullable<Course> => course !== null)
+        .filter((course): course is Course => course !== null)
         .reduce((acc, course) => {
             if (!course.end_date || new Date(course.end_date) > now) {
                 acc.currentCourses.push(course);
@@ -47,7 +47,7 @@ export default function Dashboard() {
                 acc.pastCourses.push(course);
             }
             return acc;
-        }, { currentCourses: [] as NonNullable<Course>[], pastCourses: [] as NonNullable<Course>[] });
+        }, { currentCourses: [] as Course[], pastCourses: [] as Course[] });
 
     const hasCourses = currentCourses.length > 0 || pastCourses.length > 0;
 

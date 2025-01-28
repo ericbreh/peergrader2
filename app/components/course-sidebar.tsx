@@ -17,8 +17,6 @@ interface CourseSidebarProps {
 }
 
 export function CourseSidebar({ course }: CourseSidebarProps) {
-    if (!course) return null;
-
     const items = [
         {
             title: "Dashboard",
