@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/create";
-import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
+import { PageHeader, PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";

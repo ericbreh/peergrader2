@@ -2,7 +2,7 @@ import type { Course } from "~/types";
 import { requireUser } from "~/lib/auth.supabase.server.js";
 import { getUserById, getUserCourses } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/dashboard/+types/dashboard";
-import { PageHeader, PageContent } from "~/routes/layouts/main-layout";
+import { PageHeader, PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import CourseCard from "~/components/course-card";

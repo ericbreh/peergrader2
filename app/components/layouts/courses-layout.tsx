@@ -1,8 +1,8 @@
 import { SidebarProvider } from "~/components/ui/sidebar"
 import { CourseSidebar } from "~/components/course-sidebar"
 import { Outlet, redirect, useLoaderData } from "react-router"
-import { PageContent } from "./main-layout";
-import type { Route } from ".react-router/types/app/routes/layouts/+types/course-layout";
+import { PageContent } from "~/components/layouts/main-layout";
+import type { Route } from ".react-router/types/app/components/layouts/+types/courses-layout";
 import { getCourseData } from "~/lib/queries.server";
 import { Course } from "~/types";
 import { AlertCircle } from "lucide-react";
@@ -13,7 +13,7 @@ export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
     return getCourseData(params.id);
 }
 
-export default function CourseLayout() {
+export default function CoursesLayout() {
     const course = useLoaderData<typeof loader>();
 
     if (!course) {

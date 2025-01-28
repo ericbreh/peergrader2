@@ -16,12 +16,13 @@ VITE_SUPABASE_KEY="key"
 
 ## TODO
 
-* make course switcher
-* re organize layout files, get rid of layout folder, move to components or route folder
 * make types not nullable
+* rename files? courses-dashboard, courses-students, ect? maybe
+* student/teacher/owner layouts also display different items on sidebar
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * clean database (tables and unnecessary functions)
 * make standardized errors
+* make course switcher
 
 ## MVP
 

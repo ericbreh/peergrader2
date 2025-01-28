@@ -8,11 +8,11 @@ import {
 
 export default [
   // nav bar
-  layout("./routes/layouts/main-layout.tsx", [
+  layout("./components/layouts/main-layout.tsx", [
       index("./routes/landing.tsx"),
 
       // routes where you need to be logged in
-      layout("./routes/layouts/authenticated-layout.tsx", [
+      layout("./components/layouts/authenticated-layout.tsx", [
           route("dashboard", "./routes/dashboard/dashboard.tsx"),
           route("courses/create", "./routes/courses/create.tsx"),
           route("courses/join", "./routes/courses/join.tsx"),
@@ -20,7 +20,7 @@ export default [
           // courses page
           ...prefix("courses", [
               // index("./routes/courses/courses.tsx"),
-              layout("./routes/layouts/course-layout.tsx", [
+              layout("./components/layouts/courses-layout.tsx", [
                   route(":id", "./routes/courses/dashboard.tsx"),
                   route(":id/students", "./routes/courses/students.tsx"),
                   route(":id/settings", "./routes/courses/settings.tsx"),
