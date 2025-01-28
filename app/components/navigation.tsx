@@ -1,4 +1,4 @@
-import { Link } from "react-route
+import { Link } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuItem,
