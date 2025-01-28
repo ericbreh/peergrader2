@@ -86,6 +86,37 @@ export async function createCourse(
     return { error };
 }
 
+export async function createAssignment(
+    assignment_id: string,
+    name: string,
+    publish_date: Date,
+    submission_end_date: Date,
+    feedback_start_date: Date,
+    feedback_end_date: Date,
+    peer_grades_required: number,
+    is_anonymous: boolean,
+    max_score: number,
+    num_annotations: number,
+    num_numeric_questions: number,
+    num_text_questions: number,
+) {
+    const supabase = createSupabaseServerClient();
+    const { error } = await supabase.client
+        .from('courses')
+        .insert([
+            {
+                // course_id,
+                // name,
+                // owner,
+                // number,
+                // start_date,
+                // end_date
+            }
+        ])
+
+    return { error };
+}
+
 export async function joinCourse(course_id: string, uid: string) {
     const supabase = createSupabaseServerClient();
     const { error } = await supabase.client
