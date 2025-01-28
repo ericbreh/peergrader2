@@ -16,6 +16,7 @@ VITE_SUPABASE_KEY="key"
 
 ## TODO
 
+* make course switcher
 * re organize layout files, get rid of layout folder, move to components or route folder
 * make types not nullable
 * finish auth (oauth, signup, forgot password, test, validate on client)
