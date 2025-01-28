@@ -1,51 +1,63 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Home, Users, Settings, PenBox } from "lucide-react"
 
 import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
+    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "~/components/ui/sidebar"
+import { Course } from "~/types";
 
-// Menu items.
-const items = [
-    {
-        title: "Home",
-        url: "#",
-        icon: Home,
-    },
-    {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
-]
+interface CourseSidebarProps {
+    course: Course;
+}
 
-export function CourseSidebar() {
+export function CourseSidebar({ course }: CourseSidebarProps) {
+    if (!course) return null;
+
+    const items = [
+        {
+            title: "Dashboard",
+            url: `/courses/${course.course_id}`,
+            icon: Home,
+        },
+        {
+            title: "Assignments",
+            url: `/courses/${course.course_id}/assignments`,
+            icon: PenBox,
+        },
+        {
+            title: "Students",
+            url: `/courses/${course.course_id}/students`,
+            icon: Users,
+        },
+        {
+            title: "Settings",
+            url: `/courses/${course.course_id}/settings`,
+            icon: Settings,
+        },
+    ]
+
     return (
-        <Sidebar variant="floating">
+        <Sidebar collapsible="icon" className="px-4">
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg" asChild>
+                            <a href={`/courses/${course.course_id}`}>
+                                <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
+                            </a>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
@@ -62,6 +74,7 @@ export function CourseSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+
         </Sidebar>
     )
 }

@@ -16,8 +16,11 @@ VITE_SUPABASE_KEY="key"
 
 ## TODO
 
+* re organize layout files, get rid of layout folder, move to components or route folder
+* make types not nullable
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * clean database (tables and unnecessary functions)
+* make standardized errors
 
 ## MVP
 
@@ -31,12 +34,3 @@ VITE_SUPABASE_KEY="key"
   * Submit assignment
   * Grade others submissions
   * View grades
-
-## Notes
-
-* Start / end date vs "term" (fall, winter, spring)
-
-### Used functions
-
-* get_courses_student
-* get_courses_teacher

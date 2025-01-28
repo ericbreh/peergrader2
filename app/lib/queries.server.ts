@@ -54,7 +54,7 @@ export async function getCourseData(course_id: string): Promise<Course> {
     const supabase = createSupabaseServerClient();
     const { data } = await supabase.client
         .from('courses')
-        .select('name, owner, created_at, join_code, number, start_date, end_date')
+        .select('course_id, name, owner, created_at, join_code, number, start_date, end_date')
         .eq('course_id', course_id)
         .single();
 
