@@ -3,6 +3,7 @@ import {
     route,
     index,
     layout,
+    prefix,
 } from "@react-router/dev/routes";
 
 export default [
@@ -13,13 +14,24 @@ export default [
         // routes where you need to be logged in
         layout("./routes/layouts/authenticated-layout.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"),
-
-            // course page sidebar
-            layout("./routes/layouts/course-layout.tsx", [
-                route("courses/:id", "./routes/courses/course-id.tsx"),
-            ]),
             route("courses/create", "./routes/courses/create.tsx"),
             route("courses/join", "./routes/courses/join.tsx"),
+
+            // courses page
+            ...prefix("courses", [
+                // index("./routes/courses/courses.tsx"),
+                layout("./routes/layouts/course-layout.tsx", [
+                    route(":id", "./routes/courses/dashboard.tsx"),
+                    route(":id/students", "./routes/courses/students.tsx"),
+                    route(":id/settings", "./routes/courses/settings.tsx"),
+
+                    ...prefix(":id/assignments", [
+                        index("./routes/courses/assignments/assignments.tsx"),
+                        // route("create", "./routes/courses/assignments/create.tsx"),
+                        // route(":assignment_id", "./routes/courses/assignments/assignment.tsx"),
+                    ]),
+                ]),
+            ]),
         ]),
     ]),
 
