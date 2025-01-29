@@ -86,36 +86,36 @@ export async function createCourse(
     return { error };
 }
 
-export async function createAssignment(
-    assignment_id: string,
-    name: string,
-    publish_date: Date,
-    submission_end_date: Date,
-    feedback_start_date: Date,
-    feedback_end_date: Date,
-    peer_grades_required: number,
-    is_anonymous: boolean,
-    max_score: number,
-    num_annotations: number,
-    num_numeric_questions: number,
-    num_text_questions: number,
-) {
-    const supabase = createSupabaseServerClient();
-    const { error } = await supabase.client
-        .from('courses')
-        .insert([
-            {
-                // course_id,
-                // name,
-                // owner,
-                // number,
-                // start_date,
-                // end_date
-            }
-        ])
+// export async function createAssignment(
+//     assignment_id: string,
+//     name: string,
+//     publish_date: Date,
+//     submission_end_date: Date,
+//     feedback_start_date: Date,
+//     feedback_end_date: Date,
+//     peer_grades_required: number,
+//     is_anonymous: boolean,
+//     max_score: number,
+//     num_annotations: number,
+//     num_numeric_questions: number,
+//     num_text_questions: number,
+// ) {
+//     const supabase = createSupabaseServerClient();
+//     const { error } = await supabase.client
+//         .from('courses')
+//         .insert([
+//             {
+//                 // course_id,
+//                 // name,
+//                 // owner,
+//                 // number,
+//                 // start_date,
+//                 // end_date
+//             }
+//         ])
 
-    return { error };
-}
+//     return { error };
+// }
 
 export async function joinCourse(course_id: string, uid: string) {
     const supabase = createSupabaseServerClient();
@@ -151,8 +151,34 @@ export async function joinCourseFromCode(join_code: string, uid: string) {
     return result.error ? { error: result.error } : { course_id: data.course_id };
 }
 
-// temporary, will need to be changed last_name
-export async function getAssignments(course_id: string) {
+export async function getCourseAssignments(course_id: string) {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client
+        .from('assignments')
+        .select(`
+            asgn_id,
+            created_at,
+            name,
+            owner,
+            course_id,
+            anonymous_grading,
+            start_date_submission,
+            end_date_submission,
+            start_date_grading,
+            end_date_grading,
+            max_score,
+            num_peergrades,
+            number_input,
+            num_annotations,
+            description
+            `)
+        .eq('course_id', course_id);
+
+
+    return data as Assignment[];
+}
+
+export async function getCourseStudents(course_id: string) {
     const supabase = createSupabaseServerClient();
     const { data } = await supabase.client
         .from('assignments')
@@ -177,4 +203,10 @@ export async function getAssignments(course_id: string) {
 
 
     return data as Assignment[];
+}
+
+export async function getStudentsInCourse(course_id: string) {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client.rpc('get_students_in_course', { course_id_param: course_id });
+    return data as User[];
 }

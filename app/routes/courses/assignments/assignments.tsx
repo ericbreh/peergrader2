@@ -1,23 +1,23 @@
 import { useLoaderData } from "react-router";
 import { Assignment } from "~/types";
-import { getAssignments } from "~/lib/queries.server";
-import { Route } from "./+types/assignments";
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-// import { format } from "date-fns";
+import { getCourseAssignments } from "~/lib/queries.server";
+import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignments";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import { format } from "date-fns";
 
 export async function loader({ params }: Route.LoaderArgs): Promise<Assignment[]> {
-    return getAssignments(params.course_id);
+    return getCourseAssignments(params.course_id);
 }
 
 export default function Assignments() {
     const assignments = useLoaderData<typeof loader>();
 
     return (
-        <div className="container py-8">
+        <div >
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-8">
                 Assignments
             </h2>
-            {/* <Table>
+            <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
@@ -42,7 +42,7 @@ export default function Assignments() {
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table> */}
+            </Table>
         </div>
     );
 }
