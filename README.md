@@ -17,7 +17,7 @@ VITE_SUPABASE_KEY="key"
 ## TODO
 
 * student/teacher/owner layouts
-* display different items on sidebar
+* display different data for teacher/student
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * make standardized errors
 * clean database (tables and unnecessary functions)

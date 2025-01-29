@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { User, Course } from '~/types';
+import type { User, Course, Assignment } from '~/types';
 import { createSupabaseServerClient } from './supabase.server';
 
 export default async function setUser(user: User) {
@@ -43,10 +43,10 @@ export async function getUserCourses(user: User): Promise<Course[]> {
     const supabase = createSupabaseServerClient();
     if (user.is_teacher) {
         const { data } = await supabase.client.rpc('get_courses_teacher', { user_id_param: user?.uid });
-        return (data ?? []) as Course[];
+        return data as Course[];
     } else {
         const { data } = await supabase.client.rpc('get_courses_student', { user_id_param: user?.uid });
-        return (data ?? []) as Course[];
+        return data as Course[];
     }
 }
 
@@ -149,4 +149,32 @@ export async function joinCourseFromCode(join_code: string, uid: string) {
 
     const result = await joinCourse(data.course_id, uid);
     return result.error ? { error: result.error } : { course_id: data.course_id };
+}
+
+// temporary, will need to be changed last_name
+export async function getAssignments(course_id: string) {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client
+        .from('assignments')
+        .select(`
+      asgn_id,
+      created_at,
+      name,
+      owner,
+      course_id,
+      anonymous_grading,
+      start_date_submission,
+      end_date_submission,
+      start_date_grading,
+      end_date_grading,
+      max_score,
+      num_peergrades,
+      number_input,
+      num_annotations,
+      description
+    `)
+        .eq('course_id', course_id);
+
+
+    return data as Assignment[];
 }

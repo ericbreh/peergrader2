@@ -9,8 +9,8 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 
 export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
-    if (!params.id) throw redirect("/courses");
-    return getCourseData(params.id);
+    if (!params.course_id) throw redirect("/courses");
+    return getCourseData(params.course_id);
 }
 
 export default function CoursesLayout() {

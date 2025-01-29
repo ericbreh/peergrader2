@@ -21,11 +21,11 @@ export default [
           ...prefix("courses", [
               // index("./routes/courses/courses.tsx"),
               layout("./components/layouts/courses-layout.tsx", [
-                  route(":id", "./routes/courses/dashboard.tsx"),
-                  route(":id/students", "./routes/courses/students.tsx"),
-                  route(":id/settings", "./routes/courses/settings.tsx"),
+                  route(":course_id", "./routes/courses/dashboard.tsx"),
+                  route(":course_id/students", "./routes/courses/students.tsx"),
+                  route(":course_id/settings", "./routes/courses/settings.tsx"),
 
-                  ...prefix(":id/assignments", [
+                  ...prefix(":course_id/assignments", [
                       index("./routes/courses/assignments/assignments.tsx"),
                       route("create", "./routes/courses/assignments/create.tsx"),
                       // route(":assignment_id", "./routes/courses/assignments/assignment.tsx"),

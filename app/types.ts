@@ -17,3 +17,21 @@ export type Course = {
   start_date: Date;
   end_date: Date;
 }
+
+export type Assignment = {
+  asgn_id: string;
+  created_at: string;
+  name: string;
+  owner: string;
+  course_id: string;
+  anonymous_grading: boolean;
+  start_date_submission: Date;
+  end_date_submission: Date;
+  start_date_grading: Date;
+  end_date_grading: Date;
+  max_score: number;
+  num_peergrades: number;
+  number_input: boolean;
+  num_annotations: number;
+  description: string;
+}
