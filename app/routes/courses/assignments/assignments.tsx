@@ -9,6 +9,7 @@ export async function loader({ params }: Route.LoaderArgs): Promise<Assignment[]
     return getCourseAssignments(params.course_id);
 }
 
+// teacher and student
 export default function Assignments() {
     const assignments = useLoaderData<typeof loader>();
 
@@ -21,10 +22,9 @@ export default function Assignments() {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
-                        <TableHead>Max Score</TableHead>
+                        <TableHead>Points</TableHead>
                         <TableHead>Submission Period</TableHead>
                         <TableHead>Grading Period</TableHead>
-                        <TableHead>Required Grades</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -38,7 +38,6 @@ export default function Assignments() {
                             <TableCell>
                                 {format(new Date(assignment.start_date_grading), "MMM d")} - {format(new Date(assignment.end_date_grading), "MMM d")}
                             </TableCell>
-                            <TableCell>{assignment.num_peergrades}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

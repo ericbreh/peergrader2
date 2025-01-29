@@ -33,6 +33,7 @@ const CourseGrid = ({ title, courses }: { title: string, courses: Course[] }) =>
     </div>
 );
 
+// teacher and student
 export default function Dashboard() {
     const data = useLoaderData<typeof loader>();
 

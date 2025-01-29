@@ -2,7 +2,6 @@ import { Outlet, redirect } from "react-router";
 import { requireUser } from "~/lib/auth.supabase.server";
 import type { Route } from ".react-router/types/app/components/layouts/+types/authenticated-layout";
 
-// TODO: make require User object
 export async function loader({ request }: Route.LoaderArgs) {
     try {
         await requireUser(request);

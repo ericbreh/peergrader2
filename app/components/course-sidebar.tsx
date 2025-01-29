@@ -10,13 +10,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "~/components/ui/sidebar"
-import { Course } from "~/types";
+import { Course, User } from "~/types";
 
 interface CourseSidebarProps {
     course: Course;
+    user: User;
 }
 
-export function CourseSidebar({ course }: CourseSidebarProps) {
+export function CourseSidebar({ course, user }: CourseSidebarProps) {
     const items = [
         {
             title: "Dashboard",
@@ -28,16 +29,18 @@ export function CourseSidebar({ course }: CourseSidebarProps) {
             url: `/courses/${course.course_id}/assignments`,
             icon: PenBox,
         },
-        {
-            title: "Students",
-            url: `/courses/${course.course_id}/students`,
-            icon: Users,
-        },
-        {
-            title: "Settings",
-            url: `/courses/${course.course_id}/settings`,
-            icon: Settings,
-        },
+        ...(user.is_teacher ? [
+            {
+                title: "Students",
+                url: `/courses/${course.course_id}/students`,
+                icon: Users,
+            },
+            {
+                title: "Settings",
+                url: `/courses/${course.course_id}/settings`,
+                icon: Settings,
+            },
+        ] : [])
     ]
 
     return (

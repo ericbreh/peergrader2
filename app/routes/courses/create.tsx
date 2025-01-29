@@ -79,6 +79,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   return redirect(`/courses/${course_id}`);
 }
 
+// teacher only
 export default function Create() {
   const data = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();

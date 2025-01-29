@@ -10,7 +10,8 @@ export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
   return getCourseData(params.course_id);
 }
 
-export default function Course() {
+// teacher and student
+export default function CourseDashboard() {
   const course = useLoaderData<typeof loader>();
 
   return (

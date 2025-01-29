@@ -9,6 +9,7 @@ export async function loader({ params }: Route.LoaderArgs): Promise<User[]> {
     return getStudentsInCourse(params.course_id);
 }
 
+// owner only
 export default function Students() {
     const students = useLoaderData<typeof loader>();
 
