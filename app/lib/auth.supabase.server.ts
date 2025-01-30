@@ -31,7 +31,7 @@ export const signUp = async (
         });
 
         if (!databaseError) {
-            throw redirect(successRedirectPath, { headers: supabase.headers });
+            return redirect(successRedirectPath, { headers: supabase.headers });
         }
     }
     return { error: databaseError };
@@ -49,7 +49,7 @@ export const signInWithPassword = async (
     });
 
     if (!error) {
-        throw redirect(successRedirectPath, { headers: supabase.headers });
+        return redirect(successRedirectPath, { headers: supabase.headers });
     }
 
     return { error: error.message };
@@ -65,7 +65,7 @@ export const signInWithOAuth = async (
     })
 
     if (!error) {
-        throw redirect(successRedirectPath, { headers: supabase.headers });
+        return redirect(successRedirectPath, { headers: supabase.headers });
     }
 
     return { error: error.message };
@@ -79,7 +79,7 @@ export const signOut = async (
     const { error } = await supabase.client.auth.signOut();
 
     if (!error) {
-        throw redirect(successRedirectPath, { headers: supabase.headers });
+        return redirect(successRedirectPath, { headers: supabase.headers });
     }
 
     return { error: error.message };

@@ -48,11 +48,10 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <a href={`/courses/${course.course_id}`}>
-                                <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
-                            </a>
-                        </SidebarMenuButton>
+                        <div className="ml-2">
+                            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
+                            <p className="text-sm text-muted-foreground">{course.name}</p>
+                        </div>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>

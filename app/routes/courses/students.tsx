@@ -4,6 +4,7 @@ import { getStudentsInCourse } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/courses/+types/students";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
+import { PageTitle } from "~/components/layouts/main-layout";
 
 export async function loader({ params }: Route.LoaderArgs): Promise<User[]> {
     return getStudentsInCourse(params.course_id);
@@ -15,9 +16,7 @@ export default function Students() {
 
     return (
         <div className="space-y-4">
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-                Students
-            </h2>
+            <PageTitle>Students</PageTitle>
             <Table>
                 <TableHeader>
                     <TableRow>

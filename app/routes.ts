@@ -8,7 +8,7 @@ import {
 
 export default [
     // nav bar
-    layout("./components/layouts/main-layout.tsx", [
+    layout("./components/layouts/navbar-layout.tsx", [
         index("./routes/landing.tsx"),
 
         // routes where you need to be logged in
@@ -21,12 +21,12 @@ export default [
             ...prefix("courses", [
                 // index("./routes/courses/courses.tsx"),
                 layout("./components/layouts/courses-layout.tsx", [
-                    route(":course_id", "./routes/courses/dashboard.tsx"),          // teacher and student
+                    route(":course_id", "./routes/courses/dashboard.tsx"),          // owner and enrolled student TODO
                     route(":course_id/students", "./routes/courses/students.tsx"),  // owner only TODO
                     route(":course_id/settings", "./routes/courses/settings.tsx"),  // owner only TODO
 
                     ...prefix(":course_id/assignments", [
-                        index("./routes/courses/assignments/assignments.tsx"),      // teacher and student TODO
+                        index("./routes/courses/assignments/assignments.tsx"),      // owner and enrolled student TODO
                         route("create", "./routes/courses/assignments/create.tsx"), // owner only TODO
                         // route(":assignment_id", "./routes/courses/assignments/assignment.tsx"),
                     ]),

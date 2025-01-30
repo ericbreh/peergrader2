@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/create";
-import { PageHeader, PageContent } from "~/components/layouts/main-layout";
+import { PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
@@ -171,11 +171,11 @@ export default function Create() {
 
   return (
     <>
-      <PageHeader>
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create Assignment</h1>
-      </PageHeader>
       <PageContent>
         <div className="flex-1 lg:max-w-2xl">
+          <div className="mb-4">
+            <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Create Assignment</h2>
+          </div>
           <Form onSubmit={handleSubmit} method="POST">
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">

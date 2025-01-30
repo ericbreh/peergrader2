@@ -1,46 +1,30 @@
-import { Navigation } from "../../components/navigation";
-import { Outlet, useLoaderData } from "react-router";
-import { getUser } from "~/lib/auth.supabase.server";
-import { getUserById } from "~/lib/queries.server";
-import type { Route } from ".react-router/types/app/components/layouts/+types/main-layout";
+import { cn } from "~/lib/utils";
 
-export async function loader({ request }: Route.LoaderArgs) {
-    const supabaseUser = await getUser(request);
-    let user = null;
-    if (supabaseUser) {
-        user = await getUserById(supabaseUser.id);
-    }
-    return { user };
+interface PageContentProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
-export default function MainLayout() {
-    const { user } = useLoaderData<typeof loader>();
-    return (
-        <>
-            <Navigation user={user} />
-            <Outlet />
-        </>
-    );
+export function PageTitle({ children, className }: PageContentProps) {
+  return (
+    <header>
+      <h2 className={cn(
+        "scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-4",
+        className
+      )}>
+        {children}
+      </h2>
+    </header>
+  );
 }
 
-interface PageHeaderProps {
-    children: React.ReactNode;
-}
-
-export function PageHeader({ children }: PageHeaderProps) {
-    return (
-        <header className="border-b py-6">
-            <div className="max-w-7xl mx-auto px-4">
-                {children}
-            </div>
-        </header>
-    );
-}
-
-export function PageContent({ children }: PageHeaderProps) {
-    return (
-        <main className="max-w-7xl mx-auto px-4 py-6">
-            {children}
-        </main>
-    );
+export function PageContent({ children, className }: PageContentProps) {
+  return (
+    <main className={cn(
+      "max-w-7xl mx-auto px-4 py-4",
+      className
+    )}>
+      {children}
+    </main>
+  );
 }

@@ -4,6 +4,7 @@ import type { Route } from ".react-router/types/app/routes/courses/+types/dashbo
 import type { Course } from "~/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { format } from "date-fns";
+import { PageTitle } from "~/components/layouts/main-layout";
 
 // Loader function to fetch user courses
 export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
@@ -16,9 +17,7 @@ export default function CourseDashboard() {
 
   return (
     <>
-      <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-6">
-        {course.name}
-      </h2>
+      <PageTitle>{course.name}</PageTitle>
       <div className="grid gap-6">
         <Card>
           <CardHeader>

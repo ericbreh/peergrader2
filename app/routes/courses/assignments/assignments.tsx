@@ -4,6 +4,7 @@ import { getCourseAssignments } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignments";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { format } from "date-fns";
+import { PageTitle } from "~/components/layouts/main-layout";
 
 export async function loader({ params }: Route.LoaderArgs): Promise<Assignment[]> {
     return getCourseAssignments(params.course_id);
@@ -15,9 +16,9 @@ export default function Assignments() {
 
     return (
         <div >
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 mb-8">
+            <PageTitle>
                 Assignments
-            </h2>
+            </PageTitle>
             <Table>
                 <TableHeader>
                     <TableRow>
