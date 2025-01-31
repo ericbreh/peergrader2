@@ -20,7 +20,7 @@ interface NavigationProps {
 export function Navbar({ user, course }: NavigationProps) {
   return (
     <nav className="border-b bg-background">
-      <div className="flex h-14 items-center px-8 mx-auto">
+      <div className="flex h-14 items-center px-4 mx-auto">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

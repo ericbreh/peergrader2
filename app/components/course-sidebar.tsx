@@ -9,6 +9,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarRail,
 } from "~/components/ui/sidebar"
 import { Course, User } from "~/types";
 
@@ -44,14 +45,13 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
     ]
 
     return (
-        <Sidebar collapsible="icon" className="px-4">
+        <Sidebar collapsible="icon">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <div className="ml-2">
-                            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
-                            <p className="text-sm text-muted-foreground">{course.name}</p>
-                        </div>
+                        <SidebarMenuButton size="lg">
+                            <h2 className="truncate scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
+                        </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
@@ -74,7 +74,7 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-
+            <SidebarRail />
         </Sidebar>
     )
 }

@@ -1,4 +1,4 @@
-import { SidebarProvider } from "~/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar"
 import { CourseSidebar } from "~/components/course-sidebar"
 import { Outlet, redirect, useLoaderData } from "react-router"
 import { PageContent } from "~/components/layouts/main-layout";
@@ -7,6 +7,7 @@ import { getCourseData, getUserById } from "~/lib/queries.server";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { requireUser } from "~/lib/auth.supabase.server";
+import { Separator } from "../ui/separator";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
     if (!params.course_id) throw redirect("/courses");
@@ -41,7 +42,14 @@ export default function CoursesLayout() {
             <SidebarProvider>
                 <div className="relative flex h-full w-full">
                     <CourseSidebar course={data.course} user={data.user} />
-                    <div className="w-full max-w-7xl px-4 py-6 mx-14">
+                    <div className="w-full px-4 py-4">
+                        <header className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear pb-4">
+                            <div className="flex items-center gap-2">
+                                <SidebarTrigger className="-ml-1" />
+                                <Separator orientation="vertical" className="mr-2 h-4" />
+                                <h2 className="text-l text-muted-foreground">{data.course.name}</h2>
+                            </div>
+                        </header>
                         <Outlet />
                     </div>
                 </div>

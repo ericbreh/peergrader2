@@ -3,10 +3,10 @@ import { getCourseData } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/courses/+types/dashboard";
 import type { Course } from "~/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { PageTitle } from "~/components/layouts/main-layout";
 import { Progress } from "~/components/ui/progress";
 import { Calendar } from "~/components/ui/calendar";
 import { format, differenceInCalendarMonths } from "date-fns";
+import { PageTitle } from "~/components/layouts/main-layout";
 
 // Loader function to fetch user courses
 export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
@@ -28,32 +28,29 @@ export default function CourseDashboard() {
   const monthsNeeded = Math.min(differenceInCalendarMonths(endDate, startDate) + 1, 5);
 
   const dateRange = {
-    before: { from: startDate, to: new Date(today.setHours(0,0,0,0) - 86400000) },
-    after: { from: new Date(today.setHours(0,0,0,0) + 86400000), to: endDate }
+    before: { from: startDate, to: new Date(today.setHours(0, 0, 0, 0) - 86400000) },
+    after: { from: new Date(today.setHours(0, 0, 0, 0) + 86400000), to: endDate }
   };
 
   return (
     <>
-      <PageTitle>Dashboard</PageTitle>
-      <div className="grid gap-6">
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <PageTitle>
+        Dashboard
+      </PageTitle>
+      <div className="flex flex-1 flex-col gap-4 pt-0">
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <CardTitle>{course.name}</CardTitle>
+              <CardTitle>Course Information</CardTitle>
             </CardHeader>
             <CardContent className="flex">
-              <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Course Number</p>
-                <p className="font-medium">{course.number}</p>
-              </div>
               <div className="flex-1">
                 <p className="text-sm text-muted-foreground">Join Code</p>
                 <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono font-meduim">{course.join_code}</code>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle>Course Timeline</CardTitle>
             </CardHeader>
@@ -76,7 +73,6 @@ export default function CourseDashboard() {
             </CardContent>
           </Card>
         </div>
-
         <Card>
           <CardHeader>
             <CardTitle>Course Calendar</CardTitle>
@@ -87,7 +83,7 @@ export default function CourseDashboard() {
               mode="single"
               defaultMonth={today}
               selected={today}
-              modifiers={{ 
+              modifiers={{
                 range: [dateRange.before, dateRange.after]
               }}
               modifiersStyles={{
