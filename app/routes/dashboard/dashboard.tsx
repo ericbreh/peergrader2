@@ -38,11 +38,11 @@ export default function Dashboard() {
   const data = useLoaderData<typeof loader>();
 
   // sort courses into current and past
-  const now = new Date();
+  const today = new Date();
   const { currentCourses, pastCourses } = data.courses
     .filter((course): course is Course => course !== null)
     .reduce((acc, course) => {
-      if (!course.end_date || new Date(course.end_date) > now) {
+      if (!course.end_date || new Date(course.end_date) > today) {
         acc.currentCourses.push(course);
       } else {
         acc.pastCourses.push(course);
