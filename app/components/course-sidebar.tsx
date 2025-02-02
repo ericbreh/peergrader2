@@ -1,4 +1,5 @@
-import { Home, Users, Settings, PenBox } from "lucide-react"
+import { Home, Users, Settings, PenBox, HashIcon } from "lucide-react"
+import { Link } from "react-router";
 
 import {
     Sidebar,
@@ -49,8 +50,17 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg">
-                            <h2 className="truncate scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">{course.number}</h2>
+                        <SidebarMenuButton asChild size="lg">
+                            <Link to={`/courses/${course.course_id}`}>
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-accent text-sidebar-accent-foreground">
+                                    <HashIcon className="h-4 w-4" />
+                                </div>
+                                <div className="grid flex-1 text-left text-2xl leading-tight">
+                                    <span className="truncate font-semibold">
+                                        {course.number}
+                                    </span>
+                                </div>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
