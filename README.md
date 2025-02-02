@@ -19,7 +19,6 @@ VITE_SUPABASE_KEY="key"
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * make standardized errors (not authorized, page not found)
 * clean database (tables and unnecessary functions)
-* create asgn (description markdown, rubric)
 
 ## MVP
 

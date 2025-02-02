@@ -19,6 +19,7 @@ import { useRemixForm, getValidatedFormData } from "remix-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { Controller } from "react-hook-form";
+import { Textarea } from "~/components/ui/textarea";
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const supabaseUser = await requireUser(request);
@@ -188,6 +189,17 @@ export default function CreateAssignment() {
             </div>
 
             <div className="grid gap-2">
+              <Label>Description</Label>
+              <Textarea
+                placeholder="eg. Write an essay about..."
+                {...register("description")}
+              />
+              {errors.description && (
+                <Label className="text-destructive">{errors.description.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
               <Label>Submission Period</Label>
               <Popover>
                 <PopoverTrigger asChild>
@@ -266,18 +278,6 @@ export default function CreateAssignment() {
               </Popover>
               {(errors.start_date_grading || errors.end_date_grading) && (
                 <Label className="text-destructive">{errors.start_date_grading?.message || errors.end_date_grading?.message}</Label>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label>Description</Label>
-              <Input
-                type="text"
-                placeholder="eg. Assignment Description"
-                {...register("description")}
-              />
-              {errors.description && (
-                <Label className="text-destructive">{errors.description.message}</Label>
               )}
             </div>
 
