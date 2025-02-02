@@ -42,7 +42,7 @@ export default function CoursesLayout() {
             <SidebarProvider>
                 <div className="relative flex h-full w-full">
                     <CourseSidebar course={data.course} user={data.user} />
-                    <div className="w-full px-4 py-4">
+                    <div className="w-full px-6 py-4">
                         <header className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear pb-4">
                             <div className="flex items-center gap-2">
                                 <SidebarTrigger className="-ml-1" />

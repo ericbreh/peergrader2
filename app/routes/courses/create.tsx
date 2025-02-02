@@ -80,7 +80,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 }
 
 // teacher only
-export default function Create() {
+export default function CreateCourse() {
   const data = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
   const navigation = useNavigation();
@@ -128,6 +128,7 @@ export default function Create() {
           <PageTitle className="border-b pb-2">Create Course</PageTitle>
           <Form onSubmit={handleSubmit} method="POST">
             <div className="flex flex-col gap-6">
+
               <div className="grid gap-2">
                 <Label>Course Number</Label>
                 <Input
@@ -139,6 +140,7 @@ export default function Create() {
                   <Label className="text-destructive">{errors.number.message}</Label>
                 )}
               </div>
+
               <div className="grid gap-2">
                 <Label>Course Name</Label>
                 <Input
@@ -150,6 +152,7 @@ export default function Create() {
                   <Label className="text-destructive">{errors.name.message}</Label>
                 )}
               </div>
+
               <div className="grid gap-2">
                 <Label>Course Duration</Label>
                 <Popover>
@@ -191,6 +194,7 @@ export default function Create() {
                   <Label className="text-destructive">{errors.start_date?.message || errors.end_date?.message}</Label>
                 )}
               </div>
+              
               <Button className="self-start" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
@@ -202,6 +206,7 @@ export default function Create() {
                 )}
               </Button>
             </div>
+
           </Form>
           {actionResponse?.error && (
             <Alert variant="destructive" className="mt-4">

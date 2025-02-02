@@ -35,32 +35,6 @@ export async function getUserById(userId: string): Promise<User> {
     return data as User;
 }
 
-export async function getUserCourses(user: User): Promise<Course[]> {
-    // Return empty array if data is null or undefined
-    if (!user) {
-        return [];
-    }
-    const supabase = createSupabaseServerClient();
-    if (user.is_teacher) {
-        const { data } = await supabase.client.rpc('get_courses_teacher', { user_id_param: user?.uid });
-        return data as Course[];
-    } else {
-        const { data } = await supabase.client.rpc('get_courses_student', { user_id_param: user?.uid });
-        return data as Course[];
-    }
-}
-
-export async function getCourseData(course_id: string): Promise<Course> {
-    const supabase = createSupabaseServerClient();
-    const { data } = await supabase.client
-        .from('courses')
-        .select('course_id, name, owner, created_at, join_code, number, start_date, end_date')
-        .eq('course_id', course_id)
-        .single();
-
-    return data as Course;
-}
-
 export async function createCourse(
     course_id: string,
     name: string,
@@ -87,30 +61,40 @@ export async function createCourse(
 }
 
 export async function createAssignment(
-    assignment_id: string,
+    asgn_id: string,
     name: string,
-    publish_date: Date,
-    submission_end_date: Date,
-    feedback_start_date: Date,
-    feedback_end_date: Date,
-    peer_grades_required: number,
-    is_anonymous: boolean,
+    owner: string,
+    course_id: string,
+    anonymous_grading: boolean,
+    start_date_submission: Date,
+    end_date_submission: Date,
+    start_date_grading: Date,
+    end_date_grading: Date,
     max_score: number,
+    num_peergrades: number,
+    number_input: boolean,
     num_annotations: number,
-    num_numeric_questions: number,
-    num_text_questions: number,
+    description: string
 ) {
     const supabase = createSupabaseServerClient();
     const { error } = await supabase.client
-        .from('courses')
+        .from('assignments')
         .insert([
             {
-                // course_id,
-                // name,
-                // owner,
-                // number,
-                // start_date,
-                // end_date
+                asgn_id,
+                name,
+                owner,
+                course_id,
+                anonymous_grading,
+                start_date_submission,
+                end_date_submission,
+                start_date_grading,
+                end_date_grading,
+                max_score,
+                num_peergrades,
+                number_input,
+                num_annotations,
+                description
             }
         ])
 
@@ -151,7 +135,33 @@ export async function joinCourseFromCode(join_code: string, uid: string) {
     return result.error ? { error: result.error } : { course_id: data.course_id };
 }
 
-export async function getCourseAssignments(course_id: string) {
+export async function getUserCourses(user: User): Promise<Course[]> {
+    // Return empty array if data is null or undefined
+    if (!user) {
+        return [];
+    }
+    const supabase = createSupabaseServerClient();
+    if (user.is_teacher) {
+        const { data } = await supabase.client.rpc('get_courses_teacher', { user_id_param: user?.uid });
+        return data as Course[];
+    } else {
+        const { data } = await supabase.client.rpc('get_courses_student', { user_id_param: user?.uid });
+        return data as Course[];
+    }
+}
+
+export async function getCourseData(course_id: string): Promise<Course> {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client
+        .from('courses')
+        .select('course_id, name, owner, created_at, join_code, number, start_date, end_date')
+        .eq('course_id', course_id)
+        .single();
+
+    return data as Course;
+}
+
+export async function getCourseAssignments(course_id: string): Promise<Assignment[]> {
     const supabase = createSupabaseServerClient();
     const { data } = await supabase.client
         .from('assignments')
@@ -178,35 +188,19 @@ export async function getCourseAssignments(course_id: string) {
     return data as Assignment[];
 }
 
-export async function getCourseStudents(course_id: string) {
-    const supabase = createSupabaseServerClient();
-    const { data } = await supabase.client
-        .from('assignments')
-        .select(`
-      asgn_id,
-      created_at,
-      name,
-      owner,
-      course_id,
-      anonymous_grading,
-      start_date_submission,
-      end_date_submission,
-      start_date_grading,
-      end_date_grading,
-      max_score,
-      num_peergrades,
-      number_input,
-      num_annotations,
-      description
-    `)
-        .eq('course_id', course_id);
-
-
-    return data as Assignment[];
-}
-
-export async function getStudentsInCourse(course_id: string) {
+export async function getStudentsInCourse(course_id: string): Promise<User[]> {
     const supabase = createSupabaseServerClient();
     const { data } = await supabase.client.rpc('get_students_in_course', { course_id_param: course_id });
     return data as User[];
+}
+
+export async function getAssignmentData(asgn_id: string): Promise<Assignment> {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client
+        .from('assignments')
+        .select('asgn_id, created_at, name, owner, course_id, anonymous_grading, start_date_submission, end_date_submission, start_date_grading, end_date_grading, max_score, num_peergrades, number_input, num_annotations, description')
+        .eq('asgn_id', asgn_id)
+        .single();
+
+    return data as Assignment;
 }

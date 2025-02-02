@@ -28,7 +28,7 @@ export default [
                     ...prefix(":course_id/assignments", [
                         index("./routes/courses/assignments/assignments.tsx"),      // owner and enrolled student TODO
                         route("create", "./routes/courses/assignments/create.tsx"), // owner only TODO
-                        // route(":assignment_id", "./routes/courses/assignments/assignment.tsx"),
+                        route(":asgn_id", "./routes/courses/assignments/assignment.tsx"),
                     ]),
                 ]),
             ]),

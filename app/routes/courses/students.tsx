@@ -15,7 +15,7 @@ export default function Students() {
     const students = useLoaderData<typeof loader>();
 
     return (
-        <div className="space-y-4">
+        <div>
             <PageTitle>Students</PageTitle>
             <Table>
                 <TableHeader>

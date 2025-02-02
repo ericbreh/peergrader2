@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/create";
-import { PageContent } from "~/components/layouts/main-layout";
+import { PageContent, PageTitle } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
@@ -20,14 +20,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { Controller } from "react-hook-form";
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const supabaseUser = await requireUser(request);
   const user = await getUserById(supabaseUser.id);
   return {
     user: user,
+    course_id: params.course_id
   }
 }
 
+// name, anonymous_grading, start_date_submission, end_date_submission, start_date_grading, end_date_grading, max_score, num_peergrades, number_input, num_annotations, description
 const createAssignmentSchema = zod.object({
   name: zod
     .string()
@@ -37,87 +39,80 @@ const createAssignmentSchema = zod.object({
     .max(100, {
       message: "Assignment name must not be longer than 100 characters.",
     }),
-  publish_date: zod.coerce.date({
-    required_error: "Publish date is required.",
+  anonymous_grading: zod.boolean(),
+  start_date_submission: zod.coerce.date({
+    required_error: "Submission start date is required.",
   }),
-  submission_end_date: zod.coerce.date({
+  end_date_submission: zod.coerce.date({
     required_error: "Submission end date is required.",
   }),
-  feedback_start_date: zod.coerce.date({
-    required_error: "Feedback start date is required.",
+  start_date_grading: zod.coerce.date({
+    required_error: "Grading start date is required.",
   }),
-  feedback_end_date: zod.coerce.date({
-    required_error: "Feedback end date is required.",
+  end_date_grading: zod.coerce.date({
+    required_error: "Grading end date is required.",
   }),
-  peer_grades_required: zod
-    .number()
-    .min(1, {
-      message: "At least 1 peer grade is required.",
-    })
-    .max(10, {
-      message: "Maximum 10 peer grades allowed.",
-    }),
-  is_anonymous: zod.boolean(),
   max_score: zod
     .number()
     .min(1, {
       message: "Maximum score must be at least 1.",
     }),
+  num_peergrades: zod
+    .number()
+    .min(0, {
+      message: "Number of Peer Grades cannot be negative.",
+    }),
+  number_input: zod.boolean(),
   num_annotations: zod
     .number()
     .min(0, {
       message: "Number of annotations cannot be negative.",
     }),
-  num_numeric_questions: zod
-    .number()
-    .min(0, {
-      message: "Number of numeric questions cannot be negative.",
-    }),
-  num_text_questions: zod
-    .number()
-    .min(0, {
-      message: "Number of text questions cannot be negative.",
-    }),
+  description: zod
+    .string()
 });
 
 type CreateAssignmentFormData = zod.infer<typeof createAssignmentSchema>;
 const resolver = zodResolver(createAssignmentSchema);
 
-export const action = async ({ request }: Route.ActionArgs) => {
+export const action = async ({ request, params }: Route.ActionArgs) => {
   const { errors, data, receivedValues: defaultValues } =
     await getValidatedFormData<CreateAssignmentFormData>(request, resolver);
   if (errors) {
     return ({ errors, defaultValues });
   }
   const supabaseUser = await requireUser(request);
-  const assignment_id = crypto.randomUUID();
+  const asgn_id = crypto.randomUUID();
   const { error } = await createAssignment(
-    assignment_id,
+    asgn_id,
     data.name,
-    data.publish_date,
-    data.submission_end_date,
-    data.feedback_start_date,
-    data.feedback_end_date,
-    data.peer_grades_required,
-    data.is_anonymous,
+    supabaseUser.id,
+    params.course_id,
+    data.anonymous_grading,
+    data.start_date_submission,
+    data.end_date_submission,
+    data.start_date_grading,
+    data.end_date_grading,
     data.max_score,
+    data.num_peergrades,
+    data.number_input,
     data.num_annotations,
-    data.num_numeric_questions,
-    data.num_text_questions
+    data.description
   );
 
   if (error) {
     return { error: error.message };
   }
 
-  return redirect(`/assignments/${assignment_id}`);
+  return redirect(`/courses/${params.course_id}/assignments/${asgn_id}`);
 }
 
-export default function Create() {
+// owner only
+export default function CreateAssignment() {
   const data = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
   const navigation = useNavigation();
-  const isSubmitting = navigation.formAction === "/assignments/create";
+  const isSubmitting = navigation.formAction === `/courses/${data.course_id}/assignments/create`;
 
   const {
     handleSubmit,
@@ -129,32 +124,36 @@ export default function Create() {
     mode: "onSubmit",
     resolver,
     defaultValues: {
-      peer_grades_required: 3,
-      is_anonymous: true,
+      anonymous_grading: true,
       max_score: 100,
+      num_peergrades: 3,
+      number_input: false,
       num_annotations: 0,
-      num_numeric_questions: 0,
-      num_text_questions: 0,
     },
   });
 
   const [submissionDates, setSubmissionDates] = React.useState<DateRange | undefined>();
-  const [feedbackDates, setFeedbackDates] = React.useState<DateRange | undefined>();
-  const [publishDate, setPublishDate] = React.useState<Date>();
+  const [gradingDates, setGradingDates] = React.useState<DateRange | undefined>();
 
   React.useEffect(() => {
-    if (publishDate) {
-      setValue('publish_date', publishDate);
-    }
     if (submissionDates?.from) {
-      setValue('submission_end_date', submissionDates.to || submissionDates.from);
+      setValue('start_date_submission', submissionDates.from);
     }
-    if (feedbackDates?.from) {
-      setValue('feedback_start_date', feedbackDates.from);
-      setValue('feedback_end_date', feedbackDates.to || feedbackDates.from);
+    if (submissionDates?.to) {
+      setValue('end_date_submission', submissionDates.to);
     }
-  }, [publishDate, submissionDates, feedbackDates, setValue]);
+  }, [submissionDates, setValue]);
 
+  React.useEffect(() => {
+    if (gradingDates?.from) {
+      setValue('start_date_grading', gradingDates.from);
+    }
+    if (gradingDates?.to) {
+      setValue('end_date_grading', gradingDates.to);
+    }
+  }, [gradingDates, setValue]);
+
+  // TODO: check if user is owner of course
   if (!data.user?.is_teacher) {
     return (
       <PageContent>
@@ -171,266 +170,214 @@ export default function Create() {
 
   return (
     <>
-      <PageContent>
-        <div className="flex-1 lg:max-w-2xl">
-          <div className="mb-4">
-            <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">Create Assignment</h2>
-          </div>
-          <Form onSubmit={handleSubmit} method="POST">
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label>Assignment Name</Label>
-                <Input
-                  type="text"
-                  placeholder="eg. Midterm Essay"
-                  {...register("name")}
-                />
-                {errors.name && (
-                  <Label className="text-destructive">{errors.name.message}</Label>
-                )}
-              </div>
+      <PageTitle>Create Assignment</PageTitle>
+      <div className="lg:max-w-2xl">
+        <Form onSubmit={handleSubmit} method="POST">
+          <div className="flex flex-col gap-6">
 
-              <div className="grid gap-2">
-                <Label>Publish Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !publishDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {publishDate ? format(publishDate, "LLL dd, y") : "Select publish date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={publishDate}
-                      onSelect={setPublishDate}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Submission Period</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !submissionDates && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {submissionDates?.from ? (
-                        submissionDates.to ? (
-                          <>
-                            {format(submissionDates.from, "LLL dd, y")} -{" "}
-                            {format(submissionDates.to, "LLL dd, y")}
-                          </>
-                        ) : (
-                          format(submissionDates.from, "LLL dd, y")
-                        )
-                      ) : (
-                        <span>Select submission period</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={submissionDates?.from}
-                      selected={submissionDates}
-                      onSelect={setSubmissionDates}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Feedback Period</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !feedbackDates && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {feedbackDates?.from ? (
-                        feedbackDates.to ? (
-                          <>
-                            {format(feedbackDates.from, "LLL dd, y")} -{" "}
-                            {format(feedbackDates.to, "LLL dd, y")}
-                          </>
-                        ) : (
-                          format(feedbackDates.from, "LLL dd, y")
-                        )
-                      ) : (
-                        <span>Select feedback period</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={feedbackDates?.from}
-                      selected={feedbackDates}
-                      onSelect={setFeedbackDates}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Number of Required Peer Grades</Label>
-                <Controller
-                  name="peer_grades_required"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!isNaN(Number(value))) {
-                          field.onChange(Number(value));
-                        }
-                      }}
-                    />
-                  )}
-                />
-                {errors.peer_grades_required && (
-                  <Label className="text-destructive">{errors.peer_grades_required.message}</Label>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Label>Anonymous Grading</Label>
-                <Switch {...register("is_anonymous")} />
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Maximum Score</Label>
-                <Controller
-                  name="max_score"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!isNaN(Number(value))) {
-                          field.onChange(Number(value));
-                        }
-                      }}
-                    />
-                  )}
-                />
-                {errors.max_score && (
-                  <Label className="text-destructive">{errors.max_score.message}</Label>
-                )}
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Number of Annotations Required</Label>
-                <Controller
-                  name="num_annotations"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!isNaN(Number(value))) {
-                          field.onChange(Number(value));
-                        }
-                      }}
-                    />
-                  )}
-                />
-                {errors.num_annotations && (
-                  <Label className="text-destructive">{errors.num_annotations.message}</Label>
-                )}
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Number of Numeric Questions</Label>
-                <Controller
-                  name="num_numeric_questions"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!isNaN(Number(value))) {
-                          field.onChange(Number(value));
-                        }
-                      }}
-                    />
-                  )}
-                />
-                {errors.num_numeric_questions && (
-                  <Label className="text-destructive">{errors.num_numeric_questions.message}</Label>
-                )}
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Number of Text Questions</Label>
-                <Controller
-                  name="num_text_questions"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!isNaN(Number(value))) {
-                          field.onChange(Number(value));
-                        }
-                      }}
-                    />
-                  )}
-                />
-                {errors.num_text_questions && (
-                  <Label className="text-destructive">{errors.num_text_questions.message}</Label>
-                )}
-              </div>
-
-              <Button className="self-start" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating Assignment...
-                  </>
-                ) : (
-                  "Create Assignment"
-                )}
-              </Button>
+            <div className="grid gap-2">
+              <Label>Assignment Name</Label>
+              <Input
+                type="text"
+                placeholder="eg. Midterm Essay"
+                {...register("name")}
+              />
+              {errors.name && (
+                <Label className="text-destructive">{errors.name.message}</Label>
+              )}
             </div>
-          </Form>
-          {actionResponse?.error && (
-            <Alert variant="destructive" className="mt-4">
-              <AlertTitle>{actionResponse.error}</AlertTitle>
-            </Alert>
-          )}
-        </div>
-      </PageContent>
+
+            <div className="grid gap-2">
+              <Label>Submission Period</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !submissionDates && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {submissionDates?.from ? (
+                      submissionDates.to ? (
+                        <>
+                          {format(submissionDates.from, "LLL dd, y")} -{" "}
+                          {format(submissionDates.to, "LLL dd, y")}
+                        </>
+                      ) : (
+                        format(submissionDates.from, "LLL dd, y")
+                      )
+                    ) : (
+                      <span>Select submission period</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={submissionDates?.from}
+                    selected={submissionDates}
+                    onSelect={setSubmissionDates}
+                  />
+                </PopoverContent>
+              </Popover>
+              {(errors.start_date_submission || errors.end_date_submission) && (
+                <Label className="text-destructive">{errors.start_date_submission?.message || errors.end_date_submission?.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Grading Period</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !gradingDates && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {gradingDates?.from ? (
+                      gradingDates.to ? (
+                        <>
+                          {format(gradingDates.from, "LLL dd, y")} -{" "}
+                          {format(gradingDates.to, "LLL dd, y")}
+                        </>
+                      ) : (
+                        format(gradingDates.from, "LLL dd, y")
+                      )
+                    ) : (
+                      <span>Select Grading period</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={gradingDates?.from}
+                    selected={gradingDates}
+                    onSelect={setGradingDates}
+                  />
+                </PopoverContent>
+              </Popover>
+              {(errors.start_date_grading || errors.end_date_grading) && (
+                <Label className="text-destructive">{errors.start_date_grading?.message || errors.end_date_grading?.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Description</Label>
+              <Input
+                type="text"
+                placeholder="eg. Assignment Description"
+                {...register("description")}
+              />
+              {errors.description && (
+                <Label className="text-destructive">{errors.description.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Maximum Score</Label>
+              <Controller
+                name="max_score"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    type="text"
+                    {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (!isNaN(Number(value))) {
+                        field.onChange(Number(value));
+                      }
+                    }}
+                  />
+                )}
+              />
+              {errors.max_score && (
+                <Label className="text-destructive">{errors.max_score.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Number of Required Peer Grades</Label>
+              <Controller
+                name="num_peergrades"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    type="text"
+                    {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (!isNaN(Number(value))) {
+                        field.onChange(Number(value));
+                      }
+                    }}
+                  />
+                )}
+              />
+              {errors.num_peergrades && (
+                <Label className="text-destructive">{errors.num_peergrades.message}</Label>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Number of Required Annotations</Label>
+              <Controller
+                name="num_annotations"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    type="text"
+                    {...field}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (!isNaN(Number(value))) {
+                        field.onChange(Number(value));
+                      }
+                    }}
+                  />
+                )}
+              />
+              {errors.num_annotations && (
+                <Label className="text-destructive">{errors.num_annotations.message}</Label>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Label>Anonymous Grading</Label>
+              <Switch {...register("anonymous_grading")} />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Label>Number Input</Label>
+              <Switch {...register("number_input")} />
+            </div>
+
+            <Button className="self-start" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Assignment...
+                </>
+              ) : (
+                "Create Assignment"
+              )}
+            </Button>
+          </div>
+        </Form>
+        {actionResponse?.error && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTitle>{actionResponse.error}</AlertTitle>
+          </Alert>
+        )}
+      </div>
     </>
   );
 }
