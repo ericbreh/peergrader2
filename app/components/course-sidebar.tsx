@@ -52,7 +52,7 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild size="lg">
                             <Link to={`/courses/${course.course_id}`}>
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-accent text-sidebar-accent-foreground">
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                                     <HashIcon className="h-4 w-4" />
                                 </div>
                                 <div className="grid flex-1 text-left text-2xl leading-tight">
