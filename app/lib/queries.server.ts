@@ -204,3 +204,33 @@ export async function getAssignmentData(asgn_id: string): Promise<Assignment> {
 
     return data as Assignment;
 }
+
+export async function uploadFile(file: File, uid: string, asgn_id: string) {
+    const supabase = createSupabaseServerClient();
+
+    // store file with timestamp as name, in users folder
+    const timestamp = Date.now();
+    const file_path = `${uid}/${timestamp}`;
+
+    const { error } = await supabase.client.storage
+        .from('files')
+        .upload(file_path, file);
+
+    if (error) {
+        return { error };
+    }
+
+    // Write to the submissions table
+    const { error: tableError } = await supabase.client
+        .from('submissions')
+        .insert([
+            {
+                file_id: timestamp,
+                owner: uid,
+                filename: file.name,
+                asgn_id: asgn_id,
+            },
+        ]);
+
+    return { tableError };
+}

@@ -4,8 +4,7 @@ import type { Route } from ".react-router/types/app/routes/courses/+types/dashbo
 import type { Course } from "~/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
-import { Calendar } from "~/components/ui/calendar";
-import { format, differenceInCalendarMonths } from "date-fns";
+import { format } from "date-fns";
 import { PageTitle } from "~/components/layouts/main-layout";
 
 // Loader function to fetch user courses
@@ -25,12 +24,12 @@ export default function CourseDashboard() {
       (endDate.getTime() - startDate.getTime())) * 100
   ));
 
-  const monthsNeeded = Math.min(differenceInCalendarMonths(endDate, startDate) + 1, 5);
+  // const monthsNeeded = Math.min(differenceInCalendarMonths(endDate, startDate) + 1, 5);
 
-  const dateRange = {
-    before: { from: startDate, to: new Date(today.setHours(0, 0, 0, 0) - 86400000) },
-    after: { from: new Date(today.setHours(0, 0, 0, 0) + 86400000), to: endDate }
-  };
+  // const dateRange = {
+  //   before: { from: startDate, to: new Date(today.setHours(0, 0, 0, 0) - 86400000) },
+  //   after: { from: new Date(today.setHours(0, 0, 0, 0) + 86400000), to: endDate }
+  // };
 
   return (
     <>
@@ -75,6 +74,11 @@ export default function CourseDashboard() {
         </div>
         <Card>
           <CardHeader>
+            <CardTitle>Time Sensative Tasks</CardTitle>
+          </CardHeader>
+        </Card>
+        {/* <Card>
+          <CardHeader>
             <CardTitle>Course Calendar</CardTitle>
           </CardHeader>
           <CardContent>
@@ -95,7 +99,7 @@ export default function CourseDashboard() {
               disabled={{ before: startDate, after: endDate }}
             />
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </>
   );
