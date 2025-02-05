@@ -1,4 +1,4 @@
-import type { Course } from "~/types";
+import type { Course } from "~/lib/types";
 import { requireUser } from "~/lib/auth.supabase.server.js";
 import { getUserById, getUserCourses } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/dashboard/+types/dashboard";

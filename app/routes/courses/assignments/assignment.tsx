@@ -1,6 +1,6 @@
 import { Form, useLoaderData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignment";
-import type { Assignment } from "~/types";
+import type { Assignment } from "~/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { PageTitle } from "~/components/layouts/main-layout";
 import { getAssignmentData, getUserById, uploadFile } from "~/lib/queries.server";

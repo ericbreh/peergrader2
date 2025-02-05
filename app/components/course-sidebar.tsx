@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "~/components/ui/sidebar"
-import { Course, User } from "~/types";
+import { Course, User } from "~/lib/types";
 
 interface CourseSidebarProps {
     course: Course;

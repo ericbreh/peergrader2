@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Link } from "react-router";
 import { CalendarIcon, HashIcon } from "lucide-react";
-import type { Course } from "~/types";
+import type { Course } from "~/lib/types";
 import { format } from "date-fns";
 
 interface CourseCardProps {

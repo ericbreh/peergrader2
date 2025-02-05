@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router";
 import { getCourseData } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/courses/+types/dashboard";
-import type { Course } from "~/types";
+import type { Course } from "~/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { format } from "date-fns";

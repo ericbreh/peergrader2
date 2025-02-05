@@ -13,7 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { User } from "~/types";
+import { User } from "~/lib/types";
 
 interface UserProfileProps {
     user: User;

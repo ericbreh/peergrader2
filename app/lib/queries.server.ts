@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { User, Course, Assignment } from '~/types';
+import type { User, Course, Assignment } from '~/lib/types';
 import { createSupabaseServerClient } from './supabase.server';
 
 export default async function setUser(user: User) {

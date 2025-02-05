@@ -1,6 +1,6 @@
 import { Progress } from "~/components/ui/progress";
 import { format } from "date-fns";
-import type { Assignment } from "~/types";
+import type { Assignment } from "~/lib/types";
 
 interface AssignmentTimelineProps {
     assignment: Assignment;

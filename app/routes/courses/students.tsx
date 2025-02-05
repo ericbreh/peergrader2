@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import { User } from "~/types";
+import { User } from "~/lib/types";
 import { getStudentsInCourse } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/courses/+types/students";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";

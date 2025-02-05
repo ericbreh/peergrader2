@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { ModeToggle } from "./mode-toggle";
 import { UserProfile } from "./user-profile";
-import { Course, User } from "~/types";
+import { Course, User } from "~/lib/types";
 import { Slash, GraduationCap } from "lucide-react"
 
 import {
