@@ -59,7 +59,7 @@ export default function Assignment() {
                         <CardContent>
                             <p>Upload a file here to submit your assignment</p>
                             <fetcher.Form method="post" encType="multipart/form-data" action={`/courses/${data.course_id}/assignments/${data.assignment.asgn_id}/upload`}>
-                                <Input type="file" name="submission" accept="application/pdf"/>
+                                <Input type="file" name="submission" accept="application/pdf" required/>
                                 <Button type="submit" disabled={busy}>
                                     {busy ? (
                                         <>
@@ -73,6 +73,11 @@ export default function Assignment() {
                                 {fetcher.data?.error && (
                                     <Alert variant="destructive" className="mt-4">
                                         <AlertTitle>{fetcher.data.error}</AlertTitle>
+                                    </Alert>
+                                )}
+                                {fetcher.data?.metadata && (
+                                    <Alert variant="destructive" className="mt-4">
+                                        <AlertTitle>{fetcher.data.metadata.name}</AlertTitle>
                                     </Alert>
                                 )}
                             </fetcher.Form>

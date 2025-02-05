@@ -2,17 +2,17 @@ import {
     type FileUpload,
     parseFormData,
 } from "@mjackson/form-data-parser";
-// import { requireUser } from "~/lib/auth.supabase.server";
-// import { uploadFile } from "~/lib/queries.server";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/upload";
+import { requireUser } from "~/lib/auth.supabase.server";
+import { uploadFile } from "~/lib/queries.server";
 
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_FILE_TYPES = ["application/pdf"];
 
 // student only
-export async function action({ request }: Route.ActionArgs) {
-    // const supabaseUser = await requireUser(request);
+export async function action({ request, params }: Route.ActionArgs) {
+    const supabaseUser = await requireUser(request);
     let uploadError: string | null = null;
 
     const uploadHandler = async (fileUpload: FileUpload) => {
@@ -36,14 +36,13 @@ export async function action({ request }: Route.ActionArgs) {
                 uploadError = "Please upload a PDF file";
                 return null;
             }
-            console.log(file);
-            return file;
-            // try {
-            //     await uploadFile(file, supabaseUser.id, params.asgn_id);
-            //     return file;
-            // } catch (error) {
-            //     return { error: `Upload failed: ${error}` };
-            // }
+            try {
+                await uploadFile(file, supabaseUser.id, params.asgn_id);
+                return file;
+            } catch (error) {
+                uploadError = `Upload failed: ${error}`
+                return null;
+            }
         }
         return null;
     };
