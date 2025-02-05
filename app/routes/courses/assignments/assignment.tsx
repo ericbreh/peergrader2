@@ -7,8 +7,9 @@ import { getAssignmentData, getUserById } from "~/lib/queries.server";
 import { AssignmentTimeline } from "~/components/assignment-timeline";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { Input } from "~/components/ui/input";
-
 import { Button } from "~/components/ui/button";
+import { Alert, AlertTitle } from "~/components/ui/alert";
+import { Loader2 } from "lucide-react";
 
 // Loader function to fetch user courses
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -26,6 +27,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 export default function Assignment() {
     const data = useLoaderData<typeof loader>();
     const fetcher = useFetcher();
+    const busy = fetcher.state !== "idle";
 
     return (
         <>
@@ -57,8 +59,22 @@ export default function Assignment() {
                         <CardContent>
                             <p>Upload a file here to submit your assignment</p>
                             <fetcher.Form method="post" encType="multipart/form-data" action={`/courses/${data.course_id}/assignments/${data.assignment.asgn_id}/upload`}>
-                                <Input type="file" name="submission" />
-                                <Button type="submit">Submit</Button>
+                                <Input type="file" name="submission" accept="application/pdf"/>
+                                <Button type="submit" disabled={busy}>
+                                    {busy ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Uploading...
+                                        </>
+                                    ) : (
+                                        "Upload"
+                                    )}
+                                </Button>
+                                {fetcher.data?.error && (
+                                    <Alert variant="destructive" className="mt-4">
+                                        <AlertTitle>{fetcher.data.error}</AlertTitle>
+                                    </Alert>
+                                )}
                             </fetcher.Form>
                         </CardContent>
                     </Card>
