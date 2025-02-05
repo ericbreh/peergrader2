@@ -15,7 +15,7 @@ export default [
         layout("./components/layouts/authenticated-layout.tsx", [
             route("dashboard", "./routes/dashboard/dashboard.tsx"), // teacher and student
             route("courses/create", "./routes/courses/create.tsx"), // teacher only
-            route("courses/join", "./routes/courses/join.tsx"),     // student only
+            route("courses/join", "./routes/courses/join.ts"),     // student only
 
             // courses page
             ...prefix("courses", [
@@ -26,9 +26,10 @@ export default [
                     route(":course_id/settings", "./routes/courses/settings.tsx"),  // owner only TODO
 
                     ...prefix(":course_id/assignments", [
-                        index("./routes/courses/assignments/assignments.tsx"),      // owner and enrolled student TODO
-                        route("create", "./routes/courses/assignments/create.tsx"), // owner only TODO
-                        route(":asgn_id", "./routes/courses/assignments/assignment.tsx"),
+                        index("./routes/courses/assignments/assignments.tsx"),            // owner and enrolled student TODO
+                        route("create", "./routes/courses/assignments/create.tsx"),       // owner only TODO
+                        route(":asgn_id", "./routes/courses/assignments/assignment.tsx"), // owner and enrolled student TODO
+                        route(":asgn_id/upload", "./routes/courses/assignments/upload.ts"), // student only TODO
                     ]),
                 ]),
             ]),
