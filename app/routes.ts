@@ -30,6 +30,7 @@ export default [
                         route("create", "./routes/courses/assignments/create.tsx"),       // owner only TODO
                         route(":asgn_id", "./routes/courses/assignments/assignment.tsx"), // owner and enrolled student TODO
                         route(":asgn_id/upload", "./routes/courses/assignments/upload.ts"), // student only TODO
+                        
                     ]),
                 ]),
             ]),
