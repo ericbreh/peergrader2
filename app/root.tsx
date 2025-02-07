@@ -7,6 +7,7 @@ import { themeSessionResolver } from "./sessions.server"
 import type { Route } from "./+types/root.ts";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Toaster } from "./components/ui/toaster";
 
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -53,6 +54,7 @@ export function App() {
       </head>
       <body>
         <Outlet />
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>

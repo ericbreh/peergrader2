@@ -14,6 +14,7 @@ const ACCEPTED_FILE_TYPES = ["application/pdf"];
 export async function action({ request, params }: Route.ActionArgs) {
     const supabaseUser = await requireUser(request);
     let uploadError: string | null = null;
+    let validationError: string | null = null;
 
     const uploadHandler = async (fileUpload: FileUpload) => {
         if (fileUpload.fieldName === "submission") {
@@ -25,22 +26,22 @@ export async function action({ request, params }: Route.ActionArgs) {
 
             // Validate file
             if (!file.name || file.size === 0) {
-                uploadError = "Invalid file";
+                validationError = "Invalid file";
                 return null;
             }
             if (file.size > MAX_FILE_SIZE) {
-                uploadError = "File size must be less than 5MB";
+                validationError = "File size must be less than 5MB";
                 return null;
             }
             if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-                uploadError = "Please upload a PDF file";
+                validationError = "Please upload a PDF file";
                 return null;
             }
             try {
                 await uploadFile(file, supabaseUser.id, params.asgn_id);
                 return file;
             } catch (error) {
-                uploadError = `Upload failed: ${error}`
+                uploadError = `Upload failed.`
                 return null;
             }
         }
@@ -50,13 +51,9 @@ export async function action({ request, params }: Route.ActionArgs) {
     const formData = await parseFormData(request, uploadHandler);
     const result = formData.get("submission");
 
-    if (uploadError) {
-        return { error: uploadError };
-    }
+    if (validationError) return { validationError: validationError };
+    if (uploadError) return { error: uploadError };
+    if (!result) return { error: "No file submitted" };
 
-    if (!result) {
-        return { error: "No file submitted" };
-    }
-
-    return { success: true, metadata: result };
+    return { success: true };
 }

@@ -128,7 +128,6 @@ export default function CreateCourse() {
           <PageTitle className="border-b pb-2">Create Course</PageTitle>
           <Form onSubmit={handleSubmit} method="POST">
             <div className="flex flex-col gap-6">
-
               <div className="grid gap-2">
                 <Label>Course Number</Label>
                 <Input
