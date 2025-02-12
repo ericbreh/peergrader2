@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { User, Course, Assignment } from '~/lib/types';
+import type { User, Course, Assignment, Submission } from '~/lib/types';
 import { createSupabaseServerClient } from './supabase.server';
 
 export default async function setUser(user: User) {
@@ -233,4 +233,27 @@ export async function uploadFile(file: File, uid: string, asgn_id: string) {
         ]);
 
     return { tableError };
+}
+
+export async function getMostRecentSubmission(uid: string, asgn_id: string) {
+    const supabase = createSupabaseServerClient();
+    const { data } = await supabase.client
+        .from('submissions')
+        .select('file_id, filename, owner, asgn_id, created_at, num_grades')
+        .eq('asgn_id', asgn_id)
+        .eq('owner', uid)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+    if (!data) return null;
+
+    const { data: { publicUrl } } = supabase.client.storage
+        .from('files')
+        .getPublicUrl(`${uid}/${data.file_id}`);
+
+    return {
+        ...data,
+        view_url: publicUrl
+    } as Submission;
 }

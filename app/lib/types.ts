@@ -11,7 +11,7 @@ export type Course = {
   course_id: string;
   name: string;
   owner: string;
-  created_at: string;
+  created_at: Date;
   join_code: string;
   number: string;
   start_date: Date;
@@ -20,7 +20,7 @@ export type Course = {
 
 export type Assignment = {
   asgn_id: string;
-  created_at: string;
+  created_at: Date;
   name: string;
   owner: string;
   course_id: string;
@@ -34,4 +34,14 @@ export type Assignment = {
   number_input: boolean;
   num_annotations: number;
   description: string;
+}
+
+export type Submission = {
+  file_id: string;
+  filename: string;
+  owner: string;
+  asgn_id: string;
+  created_at: Date;
+  num_grades: number;
+  view_url: string;
 }

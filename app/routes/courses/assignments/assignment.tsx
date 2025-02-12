@@ -4,7 +4,7 @@ import type { Route } from ".react-router/types/app/routes/courses/assignments/+
 import type { Assignment } from "~/lib/types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { PageTitle } from "~/components/layouts/main-layout";
-import { getAssignmentData, getUserById } from "~/lib/queries.server";
+import { getAssignmentData, getMostRecentSubmission, getUserById } from "~/lib/queries.server";
 import { AssignmentTimeline } from "~/components/assignment-timeline";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { Input } from "~/components/ui/input";
@@ -18,10 +18,15 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     const supabaseUser = await requireUser(request);
     const user = await getUserById(supabaseUser.id);
     const assignment = await getAssignmentData(params.asgn_id);
+    let submission = null;
+    if (!user.is_teacher) {
+        submission = await getMostRecentSubmission(user.uid, params.asgn_id);
+    }
     return {
         user: user,
-        assignment: assignment,
         course_id: params.course_id,
+        assignment: assignment,
+        submission: submission,
     }
 }
 
@@ -70,7 +75,7 @@ export default function Assignment() {
                         <AssignmentTimeline assignment={data.assignment} />
                     </CardContent>
                 </Card>
-                {!data.user.is_teacher && (
+                {!data.user.is_teacher &&
                     <Card>
                         <fetcher.Form method="post" encType="multipart/form-data" action={`/courses/${data.course_id}/assignments/${data.assignment.asgn_id}/upload`}>
                             <CardHeader>
@@ -79,7 +84,7 @@ export default function Assignment() {
                             <CardContent>
                                 <div className="flex flex-col gap-4">
                                     <div className="grid gap-2">
-                                        <p className="text-sm text-muted-foreground">Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</p>
+                                        {data.submission ? <p className="text-sm text-muted-foreground">{data.submission.filename} submitted! Feel free to resubmit up until the deadline.</p> : <p className="text-sm text-muted-foreground">Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</p>}
                                         <Input
                                             type="file"
                                             name="submission"
@@ -110,7 +115,7 @@ export default function Assignment() {
                             </CardFooter>
                         </fetcher.Form>
                     </Card>
-                )}
+                }
             </div>
         </>
     );
