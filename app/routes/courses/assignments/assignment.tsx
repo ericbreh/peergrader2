@@ -4,7 +4,7 @@ import type { Route } from ".react-router/types/app/routes/courses/assignments/+
 import type { Assignment } from "~/lib/types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { PageTitle } from "~/components/layouts/main-layout";
-import { getAssignmentData, getMostRecentSubmission, getUserById } from "~/lib/queries.server";
+import { getAssignmentData, getMostRecentSubmission, getStudentsInCourse, getUserById } from "~/lib/queries.server";
 import { AssignmentTimeline } from "~/components/assignment-timeline";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { Input } from "~/components/ui/input";
@@ -12,21 +12,41 @@ import { Button } from "~/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import { Label } from "~/components/ui/label";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 
 // Loader function to fetch user courses
 export async function loader({ params, request }: Route.LoaderArgs) {
     const supabaseUser = await requireUser(request);
     const user = await getUserById(supabaseUser.id);
     const assignment = await getAssignmentData(params.asgn_id);
-    let submission = null;
+
+    // this is bad, teacher/student should be seperated
+    let mostRecentSubmission = null;
     if (!user.is_teacher) {
-        submission = await getMostRecentSubmission(user.uid, params.asgn_id);
+        mostRecentSubmission = await getMostRecentSubmission(user.uid, params.asgn_id);
     }
+
+    let studentSubmissions = null;
+    if (user.is_teacher) {
+        const students = await getStudentsInCourse(params.course_id);
+        studentSubmissions = await Promise.all(
+            students.map(async (student) => {
+                const submission = await getMostRecentSubmission(student.uid, params.asgn_id);
+                return {
+                    student: student,
+                    submission: submission
+                };
+            })
+        );
+    }
+
     return {
         user: user,
         course_id: params.course_id,
         assignment: assignment,
-        submission: submission,
+        mostRecentSubmission: mostRecentSubmission,
+        studentSubmissions: studentSubmissions,
     }
 }
 
@@ -84,7 +104,7 @@ export default function Assignment() {
                             <CardContent>
                                 <div className="flex flex-col gap-4">
                                     <div className="grid gap-2">
-                                        {data.submission ? <p className="text-sm text-muted-foreground">{data.submission.filename} submitted! Feel free to resubmit up until the deadline.</p> : <p className="text-sm text-muted-foreground">Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</p>}
+                                        {data.mostRecentSubmission ? <p className="text-sm text-muted-foreground">{data.mostRecentSubmission.filename} submitted! Feel free to resubmit up until the deadline.</p> : <p className="text-sm text-muted-foreground">Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</p>}
                                         <Input
                                             type="file"
                                             name="submission"
@@ -115,6 +135,40 @@ export default function Assignment() {
                             </CardFooter>
                         </fetcher.Form>
                     </Card>
+                }
+                {data.user.is_teacher &&
+                    <div>
+                        <PageTitle>
+                            Submissions
+                        </PageTitle>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Email</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {data.studentSubmissions?.map((studentSubmission) => (
+                                    <TableRow key={studentSubmission.student.uid}>
+                                        <TableCell>
+                                            <div className="flex items-center gap-2">
+                                                <Avatar className="h-8 w-8">
+                                                    <AvatarImage src={studentSubmission.student.profile_image} />
+                                                    <AvatarFallback>
+                                                        {studentSubmission.student.first_name[0]}
+                                                        {studentSubmission.student.last_name[0]}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <span>{`${studentSubmission.student.first_name} ${studentSubmission.student.last_name}`}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>{studentSubmission.student.email}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 }
             </div>
         </>
