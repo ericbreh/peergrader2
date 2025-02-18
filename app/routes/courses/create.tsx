@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/+types/create";
-import { PageContent, PageTitle } from "~/components/layouts/main-layout";
+import { PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover
 import { useRemixForm, getValidatedFormData } from "remix-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
+import { H2, Muted } from "~/components/ui/typography";
 
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -125,7 +126,7 @@ export default function CreateCourse() {
     <>
       <PageContent>
         <div className="flex-1 lg:max-w-2xl">
-          <PageTitle className="border-b pb-2">Create Course</PageTitle>
+          <H2 className="border-b py-2 mb-4">Create Course</H2>
           <Form onSubmit={handleSubmit} method="POST">
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
@@ -174,7 +175,7 @@ export default function CreateCourse() {
                           format(date.from, "LLL dd, y")
                         )
                       ) : (
-                        <span>Select course dates</span>
+                        <Muted>Select course dates</Muted>
                       )}
                     </Button>
                   </PopoverTrigger>

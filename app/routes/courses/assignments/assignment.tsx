@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignment";
 import type { Assignment } from "~/lib/types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
-import { PageTitle } from "~/components/layouts/main-layout";
 import { getAssignmentData, getMostRecentSubmission, getStudentsInCourse, getUserById } from "~/lib/queries.server";
 import { AssignmentTimeline } from "~/components/assignment-timeline";
 import { requireUser } from "~/lib/auth.supabase.server";
@@ -14,6 +13,7 @@ import { useToast } from "~/hooks/use-toast";
 import { Label } from "~/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { H2, H3, Muted, Small } from "~/components/ui/typography";
 
 // Loader function to fetch user courses
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -75,9 +75,7 @@ export default function Assignment() {
 
     return (
         <>
-            <PageTitle>
-                {data.assignment.name}
-            </PageTitle>
+            <H2 className="pb-4">{data.assignment.name}</H2>
             <div className="flex flex-1 flex-col gap-4 pt-0">
                 <Card>
                     <CardHeader>
@@ -89,7 +87,7 @@ export default function Assignment() {
                 </Card>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Timeline</CardTitle>
+                        <CardTitle>Assignment Timeline</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <AssignmentTimeline assignment={data.assignment} />
@@ -104,7 +102,7 @@ export default function Assignment() {
                             <CardContent>
                                 <div className="flex flex-col gap-4">
                                     <div className="grid gap-2">
-                                        {data.mostRecentSubmission ? <p className="text-sm text-muted-foreground">{data.mostRecentSubmission.filename} submitted! Feel free to resubmit up until the deadline.</p> : <p className="text-sm text-muted-foreground">Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</p>}
+                                        {data.mostRecentSubmission ? <Muted>{data.mostRecentSubmission.filename} submitted! Feel free to resubmit up until the deadline.</Muted> : <Muted>Please upload your assignment as a PDF file. Make sure your submission is complete before uploading.</Muted>}
                                         <Input
                                             type="file"
                                             name="submission"
@@ -138,9 +136,7 @@ export default function Assignment() {
                 }
                 {data.user.is_teacher &&
                     <div>
-                        <PageTitle>
-                            Submissions
-                        </PageTitle>
+                        <H3>Submissions</H3>
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -160,7 +156,7 @@ export default function Assignment() {
                                                         {studentSubmission.student.last_name[0]}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <span>{`${studentSubmission.student.first_name} ${studentSubmission.student.last_name}`}</span>
+                                                <Small>{`${studentSubmission.student.first_name} ${studentSubmission.student.last_name}`}</Small>
                                             </div>
                                         </TableCell>
                                         <TableCell>{studentSubmission.student.email}</TableCell>

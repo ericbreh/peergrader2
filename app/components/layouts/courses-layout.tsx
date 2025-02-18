@@ -8,6 +8,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { Separator } from "../ui/separator";
+import { Muted } from "../ui/typography";
 
 export async function loader({ params, request }: Route.LoaderArgs) {
     if (!params.course_id) throw redirect("/courses");
@@ -47,7 +48,7 @@ export default function CoursesLayout() {
                             <div className="flex items-center gap-2">
                                 <SidebarTrigger className="-ml-1" />
                                 <Separator orientation="vertical" className="mr-2 h-4" />
-                                <h2 className="text-l text-muted-foreground">{data.course.name}</h2>
+                                <Muted>{data.course.name}</Muted>
                             </div>
                         </header>
                         <Outlet />

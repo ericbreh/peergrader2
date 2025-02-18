@@ -1,6 +1,7 @@
 import { Progress } from "~/components/ui/progress";
 import { format } from "date-fns";
 import type { Assignment } from "~/lib/types";
+import { Muted, P } from "./ui/typography";
 
 interface AssignmentTimelineProps {
     assignment: Assignment;
@@ -28,20 +29,20 @@ export function AssignmentTimeline({ assignment, minimal = false }: AssignmentTi
     return (
         <div className="grid gap-4 grid-cols-2">
             <div className="space-y-1">
-                {!minimal && (<p className="text-sm font-medium">Submission</p>)}
+                {!minimal && (<P>Submission</P>)}
                 <Progress value={submissionProgress} className="h-2" />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>{format(submissionStart, minimal ? 'MMM d' : 'PP')}</span>
-                    <span>{format(submissionEnd, minimal ? 'MMM d' : 'PP')}</span>
+                <div className="flex justify-between">
+                    <Muted>{format(submissionStart, minimal ? 'MMM d' : 'PP')}</Muted>
+                    <Muted>{format(submissionEnd, minimal ? 'MMM d' : 'PP')}</Muted>
                 </div>
             </div>
 
             <div className="space-y-1">
-                {!minimal && (<p className="text-sm font-medium">Grading</p>)}
+                {!minimal && (<P>Grading</P>)}
                 <Progress value={gradingProgress} className="h-2" />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>{format(gradingStart, minimal ? 'MMM d' : 'PP')}</span>
-                    <span>{format(gradingEnd, minimal ? 'MMM d' : 'PP')}</span>
+                <div className="flex justify-between">
+                    <Muted>{format(gradingStart, minimal ? 'MMM d' : 'PP')}</Muted>
+                    <Muted>{format(gradingEnd, minimal ? 'MMM d' : 'PP')}</Muted>
                 </div>
             </div>
         </div>

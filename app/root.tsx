@@ -8,6 +8,7 @@ import type { Route } from "./+types/root.ts";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Toaster } from "./components/ui/toaster";
+import { H3, MultilineCode } from "./components/ui/typography";
 
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -107,10 +108,8 @@ export function ErrorBoundary({
                 </Alert>
 
                 <div className="mt-4">
-                  <h3 className="text-sm font-medium mb-2">Stack trace:</h3>
-                  <pre className="text-xs bg-muted p-4 rounded-lg overflow-auto">
-                    {error.stack}
-                  </pre>
+                  <H3>Stack trace:</H3>
+                  <MultilineCode>{error.stack}</MultilineCode>
                 </div>
               </div>
             ) : (

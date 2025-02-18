@@ -1,6 +1,6 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
 import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/create";
-import { PageContent, PageTitle } from "~/components/layouts/main-layout";
+import { PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";
 import { requireUser } from "~/lib/auth.supabase.server";
@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { Controller } from "react-hook-form";
 import { Textarea } from "~/components/ui/textarea";
+import { H2, Muted } from "~/components/ui/typography";
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const supabaseUser = await requireUser(request);
@@ -171,7 +172,7 @@ export default function CreateAssignment() {
 
   return (
     <>
-      <PageTitle>Create Assignment</PageTitle>
+      <H2 className="pb-4">Create Assignment</H2>
       <div className="lg:max-w-2xl">
         <Form onSubmit={handleSubmit} method="POST">
           <div className="flex flex-col gap-6">
@@ -221,7 +222,7 @@ export default function CreateAssignment() {
                         format(submissionDates.from, "LLL dd, y")
                       )
                     ) : (
-                      <span>Select submission period</span>
+                      <Muted>Select submission period</Muted>
                     )}
                   </Button>
                 </PopoverTrigger>
@@ -262,7 +263,7 @@ export default function CreateAssignment() {
                         format(gradingDates.from, "LLL dd, y")
                       )
                     ) : (
-                      <span>Select Grading period</span>
+                      <Muted>Select Grading period</Muted>
                     )}
                   </Button>
                 </PopoverTrigger>

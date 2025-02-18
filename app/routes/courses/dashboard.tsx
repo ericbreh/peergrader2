@@ -5,7 +5,7 @@ import type { Course } from "~/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { format } from "date-fns";
-import { PageTitle } from "~/components/layouts/main-layout";
+import { H2, InlineCode, Muted, P } from "~/components/ui/typography";
 
 // Loader function to fetch user courses
 export async function loader({ params }: Route.LoaderArgs): Promise<Course> {
@@ -33,10 +33,8 @@ export default function CourseDashboard() {
 
   return (
     <>
-      <PageTitle>
-        Dashboard
-      </PageTitle>
-      <div className="flex flex-1 flex-col gap-4 pt-0">
+      <H2 className="pb-4">Dashboard</H2>
+      <div className="flex flex-1 flex-col gap-4 ">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <Card>
             <CardHeader>
@@ -44,8 +42,8 @@ export default function CourseDashboard() {
             </CardHeader>
             <CardContent className="flex">
               <div className="flex-1">
-                <p className="text-sm text-muted-foreground">Join Code</p>
-                <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono font-meduim">{course.join_code}</code>
+                <Muted>Join Code </Muted>
+                <InlineCode>{course.join_code}</InlineCode>
               </div>
             </CardContent>
           </Card>
@@ -57,16 +55,16 @@ export default function CourseDashboard() {
               <Progress value={progress} />
               <div className="flex justify-between mt-2">
                 <div>
-                  <p className="font-medium">{format(startDate, 'PP')}</p>
-                  <p className="text-sm text-muted-foreground">Start</p>
+                  <P>{format(startDate, 'PP')}</P>
+                  <Muted>Start</Muted>
                 </div>
                 <div>
-                  <p className="font-medium">{format(today, 'PP')}</p>
-                  <p className="text-sm text-muted-foreground">Today</p>
+                  <P>{format(today, 'PP')}</P>
+                  <Muted>Today</Muted>
                 </div>
                 <div>
-                  <p className="font-medium">{format(endDate, 'PP')}</p>
-                  <p className="text-sm text-muted-foreground">End</p>
+                  <P>{format(endDate, 'PP')}</P>
+                  <Muted>End</Muted>
                 </div>
               </div>
             </CardContent>

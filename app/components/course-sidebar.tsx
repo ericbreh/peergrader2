@@ -13,6 +13,7 @@ import {
     SidebarRail,
 } from "~/components/ui/sidebar"
 import { Course, User } from "~/lib/types";
+import { H3, Small } from "./ui/typography";
 
 interface CourseSidebarProps {
     course: Course;
@@ -56,9 +57,9 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
                                     <HashIcon className="h-4 w-4" />
                                 </div>
                                 <div className="grid flex-1 text-left text-2xl leading-tight">
-                                    <span className="truncate font-semibold">
+                                    <H3 className="truncate">
                                         {course.number}
-                                    </span>
+                                    </H3>
                                 </div>
                             </Link>
                         </SidebarMenuButton>
@@ -75,7 +76,7 @@ export function CourseSidebar({ course, user }: CourseSidebarProps) {
                                     <SidebarMenuButton asChild>
                                         <a href={item.url}>
                                             <item.icon />
-                                            <span>{item.title}</span>
+                                            <Small className="font-normal">{item.title}</Small>
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

@@ -2,7 +2,7 @@ import type { Course } from "~/lib/types";
 import { requireUser } from "~/lib/auth.supabase.server.js";
 import { getUserById, getUserCourses } from "~/lib/queries.server.js";
 import type { Route } from ".react-router/types/app/routes/dashboard/+types/dashboard";
-import { PageContent, PageTitle } from "~/components/layouts/main-layout";
+import { PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import CourseCard from "~/components/course-card";
@@ -10,6 +10,7 @@ import { Separator } from "~/components/ui/separator";
 import { Link, useLoaderData } from "react-router";
 import { Button } from "~/components/ui/button";
 import { JoinCourseDialog } from "~/components/join-course-dialog";
+import { H2, Lead } from "~/components/ui/typography";
 
 // Loader function to fetch user courses
 export async function loader({ request }: Route.LoaderArgs) {
@@ -24,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 const CourseGrid = ({ title, courses }: { title: string, courses: Course[] }) => (
   <div className="space-y-4">
-    <p className="text-xl text-muted-foreground">{title}</p>
+    <Lead>{title}</Lead>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {courses.map((course) => (
         <CourseCard key={course.course_id} course={course} />
@@ -56,7 +57,7 @@ export default function Dashboard() {
     <>
       <PageContent>
         <div className="flex justify-between items-center">
-          <PageTitle>Dashboard</PageTitle>
+          <H2 className="pb-4">Dashboard</H2>
           {data.user?.is_teacher ? (
             <Button asChild>
               <Link to="/courses/create">Create Course</Link>

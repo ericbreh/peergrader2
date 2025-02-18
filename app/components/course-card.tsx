@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { CalendarIcon, HashIcon } from "lucide-react";
 import type { Course } from "~/lib/types";
 import { format } from "date-fns";
+import { Muted } from "./ui/typography";
 
 interface CourseCardProps {
     course: Course;
@@ -19,16 +20,16 @@ export default function CourseCard({ course }: CourseCardProps) {
                     {course.number && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <HashIcon className="h-4 w-4" />
-                            <span>{course.number}</span>
+                            <Muted>{course.number}</Muted>
                         </div>
                     )}
                     {course.start_date && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CalendarIcon className="h-4 w-4" />
-                            <span>
+                            <Muted>
                                 {format(new Date(course.start_date), 'PP')}
                                 {course.end_date && ` - ${format(new Date(course.end_date), 'PP')}`}
-                            </span>
+                            </Muted>
                         </div>
                     )}
                 </CardContent>
