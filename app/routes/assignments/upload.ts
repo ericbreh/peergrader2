@@ -2,7 +2,7 @@ import {
     type FileUpload,
     parseFormData,
 } from "@mjackson/form-data-parser";
-import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/upload";
+import type { Route } from ".react-router/types/app/routes/assignments/+types/upload";
 import { requireUser } from "~/lib/auth.supabase.server";
 import { uploadFile } from "~/lib/queries.server";
 

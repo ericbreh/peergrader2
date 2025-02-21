@@ -26,10 +26,11 @@ export default [
                     route(":course_id/settings", "./routes/courses/settings.tsx"),  // owner only TODO
 
                     ...prefix(":course_id/assignments", [
-                        index("./routes/courses/assignments/assignments.tsx"),            // owner and enrolled student TODO
-                        route("create", "./routes/courses/assignments/create.tsx"),       // owner only TODO
-                        route(":asgn_id", "./routes/courses/assignments/assignment.tsx"), // owner and enrolled student TODO
-                        route(":asgn_id/upload", "./routes/courses/assignments/upload.ts"), // student only TODO
+                        index("./routes/assignments/assignments.tsx"),              // owner and enrolled student TODO
+                        route("create", "./routes/assignments/create.tsx"),         // owner only TODO
+                        route(":asgn_id", "./routes/assignments/assignment.tsx"),   // owner and enrolled student TODO
+                        route(":asgn_id/upload", "./routes/assignments/upload.ts"), // student only TODO
+                        route(":asgn_id/grade", "./routes/grade/grade.tsx"),        // owner and enrolled student TODO
                         
                     ]),
                 ]),

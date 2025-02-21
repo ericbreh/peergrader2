@@ -1,5 +1,5 @@
 import { useLoaderData, Form, useNavigation, redirect, useActionData } from "react-router";
-import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/create";
+import type { Route } from ".react-router/types/app/routes/assignments/+types/create";
 import { PageContent } from "~/components/layouts/main-layout";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { AlertCircle, Loader2, CalendarIcon } from "lucide-react";

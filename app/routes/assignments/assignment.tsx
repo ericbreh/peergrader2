@@ -1,6 +1,6 @@
-import { useFetcher, useLoaderData } from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 import { useEffect } from "react";
-import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignment";
+import type { Route } from ".react-router/types/app/routes/assignments/+types/assignment";
 import type { Assignment } from "~/lib/types";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { getAssignmentData, getMostRecentSubmission, getStudentsInCourse, getUserById } from "~/lib/queries.server";
@@ -12,7 +12,7 @@ import { Loader2, Upload } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import { Label } from "~/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
 import { H2, H3, Muted, Small } from "~/components/ui/typography";
 import { format } from "date-fns";
 
@@ -160,7 +160,10 @@ export default function Assignment() {
                                                 <Small>{`${studentSubmission.student.first_name} ${studentSubmission.student.last_name}`}</Small>
                                             </div>
                                         </TableCell>
-                                        <TableCell>{studentSubmission.submission && `${format(studentSubmission.submission.created_at, "MMM dd 'at' h:mm a")}`}</TableCell>
+                                        <TableCell>{studentSubmission.submission &&
+                                            <Link to={`/courses/${data.course_id}/assignments/${data.assignment.asgn_id}/grade`}>
+                                                {format(studentSubmission.submission.created_at, "MMM dd 'at' h:mm a")}
+                                            </Link>}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

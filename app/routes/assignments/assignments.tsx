@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router";
 import { getCourseAssignments, getUserById } from "~/lib/queries.server";
-import type { Route } from ".react-router/types/app/routes/courses/assignments/+types/assignments";
+import type { Route } from ".react-router/types/app/routes/assignments/+types/assignments";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { requireUser } from "~/lib/auth.supabase.server";
