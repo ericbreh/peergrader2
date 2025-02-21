@@ -14,6 +14,7 @@ import { Label } from "~/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { H2, H3, Muted, Small } from "~/components/ui/typography";
+import { format } from "date-fns";
 
 // Loader function to fetch user courses
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -141,7 +142,7 @@ export default function Assignment() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Name</TableHead>
-                                    <TableHead>Email</TableHead>
+                                    <TableHead>Submission</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -159,7 +160,7 @@ export default function Assignment() {
                                                 <Small>{`${studentSubmission.student.first_name} ${studentSubmission.student.last_name}`}</Small>
                                             </div>
                                         </TableCell>
-                                        <TableCell>{studentSubmission.student.email}</TableCell>
+                                        <TableCell>{studentSubmission.submission && `${format(studentSubmission.submission.created_at, "MMM dd 'at' h:mm a")}`}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

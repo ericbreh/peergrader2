@@ -20,7 +20,7 @@ VITE_SUPABASE_KEY="key"
 * finish auth (oauth, signup, forgot password, test, validate on client)
 * make standardized errors (not authorized, page not found)
 * clean database (tables and unnecessary functions)
-* assignment stage, show if submitted, if can still submit...
+* assignment stage - show if submitted, if can still submit...
 
 ## MVP
 
